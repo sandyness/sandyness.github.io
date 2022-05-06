@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on 一片生菜叶</title>
+    <link>https://sandyness.github.io/page/</link>
+    <description>Recent content in Pages on 一片生菜叶</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://sandyness.github.io/about/</link>
+      <pubDate>Mon, 11 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sandyness.github.io/about/</guid>
+      <description>💡 我的阶段性总结 我们的信念都是我们自己选择的，既然如此，更要选择那些让自己受益的信念。 💡 人每天只有两件事要做：认识自己，和爱自己。其他事情都</description>
+    </item>
+    
+    <item>
+      <title>Archives</title>
+      <link>https://sandyness.github.io/archives/</link>
+      <pubDate>Mon, 11 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://sandyness.github.io/archives/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>friends</title>
+      <link>https://sandyness.github.io/links/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://sandyness.github.io/links/</guid>
+      <description> .article-header { display: none; } .article-footer { display: none; }  </description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>https://sandyness.github.io/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sandyness.github.io/search/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
