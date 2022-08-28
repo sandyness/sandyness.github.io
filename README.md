@@ -1,2 +1,1 @@
-# shengcaiye.github.io
-# sandyness.github.io
+# my project blog
