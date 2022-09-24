@@ -9,7 +9,7 @@
 <meta property='og:description' content='Attention Is All You Need'>
 <meta property='og:url' content='https://sandyness.github.io/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
 <meta property='og:site_name' content='一片生菜叶'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='transformer' /><meta property='article:published_time' content='2022-08-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-08-07T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Transformer' /><meta property='article:published_time' content='2022-08-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-08-07T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="Transformer论文阅读">
 <meta name="twitter:description" content="Attention Is All You Need"><style>
     :root {
@@ -294,7 +294,7 @@
 
 
                 <time class="article-time--reading">
-                    1 minute read
+                    3 minute read
                 </time>
             </div>
         
@@ -308,16 +308,76 @@
     <section class="article-content">
     
     
-    <h1 id="part-1-sequence-to-sequence-learning-and-attention">Part 1: Sequence to Sequence Learning and Attention</h1>
-<p>论文“Attention Is All You Need”描述了转换器和所谓的序列到序列架构。Seq2Seq是一种神经网络，它将给定的元素序列（例如句子中的单词序列）转换为另一个序列。（好吧，考虑到这个名字，这可能不会让你感到惊讶。）Seq2Seq 模型特别擅长翻译，将一种语言的单词序列转换为另一种语言的不同单词序列。此类模型的一个流行选择是基于长短期记忆 (LSTM) 的模型。对于依赖于序列的数据，LSTM 模块可以赋予序列意义，同时记住（或忘记）它认为重要（或不重要）的部分。例如，句子是依赖于顺序的，因为单词的顺序对于理解句子至关重要。LSTM 是此类数据的自然选择。</p>
-<p>Seq2Seq 模型由一个 Encoder 和一个 Decoder 组成。Encoder 获取输入序列并将其映射到更高维空间（n 维向量）。该抽象向量被输入解码器，解码器将其转换为输出序列。输出序列可以是另一种语言、符号、输入的副本等。</p>
-<p>将编码器和解码器想象成只能说两种语言的人工翻译。他们的第一语言是他们的母语，这在他们两者之间是不同的（例如德语和法语），而他们的第二语言是他们共同的想象语言。为了将德语翻译成法语，编码器将德语句子转换成它所知道的另一种语言，即想象的语言。由于解码器能够读取该想象中的语言，它现在可以从该语言翻译成法语。该模型（由编码器和解码器组成）一起可以将德语翻译成法语！</p>
-<p>假设一开始，编码器和解码器都不是很流利的想象语言。为了学习它，我们在很多例子上训练他们（模型）。Seq2Seq 模型的编码器和解码器的一个非常基本的选择是它们每个都使用一个 LSTM。</p>
-<p>你想知道变形金刚什么时候最终会发挥作用，不是吗？</p>
-<p>我们还需要一个技术细节来让 Transformer 更容易理解：注意力。注意力机制查看输入序列，并在每个步骤中决定序列的哪些其他部分是重要的。这听起来很抽象，但让我用一个简单的例子来澄清一下：阅读这篇文章时，你总是把注意力集中在你读过的单词上，但同时你的大脑仍然会记住文本中的重要关键词，以便提供上下文。</p>
-<p>对于给定的序列，注意力机制的工作方式类似。对于我们的人类编码器和解码器的例子，想象一下，编码器不仅用想象的语言写下句子的翻译，还写下对句子语义很重要的关键字，并将它们提供给解码器除了常规翻译。这些新关键字使解码器的翻译变得更加容易，因为它知道句子的哪些部分是重要的，哪些关键术语给出了句子的上下文。</p>
-<p>换句话说，对于 LSTM（编码器）读取的每个输入，注意力机制会同时考虑几个其他输入，并通过为这些输入赋予不同的权重来决定哪些是重要的。然后，解码器将编码的句子和注意力机制提供的权重作为输入。要了解有关注意力的更多信息，请参阅这篇文章。对于比所提供的更科学的方法，请阅读这篇名为“基于注意力的神经机器翻译的有效方法”的伟大论文中关于序列到序列模型的不同基于注意力的方法。</p>
-<h1 id="heading"></h1>
+    <p>隨著深度學習的發展，自然語言處理 (Natural Language Processing，NLP) 技術越趨成熟，近年來在情感分析、機器翻譯、語音辨識、對話機器人等任務上均有很不錯的結果。</p>
+<p>自然語言處理是指讓電腦能夠分析、理解人類語言的一項技術，而人類語言具有前後順序、上下文關係，對於這種時間序列的資料很常使用循環神經網路 (Recurrent Neural Network，RNN)。但由於 RNN 難以進行平行運算，因此 Google 提出了一種不使用 RNN、CNN，僅使用自注意力機制 (self-attention mechanism) 的網路架構 — Transformer。</p>
+<p>本文將要介紹 Attention Is All You Need 論文，發表於 NIPS 2017。其網路架構是基於 Seq2Seq + self-attention mechanism。在開始閱讀之前，建議先了解 RNN、Seq2Seq 及注意力機制 (attention mechanism)，本文僅大略地介紹。</p>
+<p><img src="/content/post/transformer.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="这是图片"
+	
+	
+></p>
+<h2 id="seq2seq">Seq2Seq</h2>
+<p>Seq2Seq主要由兩篇論文提出：Sequence to Sequence Learning with Neural Networks、Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation，兩者概念相同，差別在於使用不同的 RNN 模型。前者使用 LSTM，而後者使用 GRU。</p>
+<p>其架構為 Encoder-Decoder，如下圖所示，Encoder 會先將輸入句子進行編碼，得到的狀態會傳給 Decoder 解碼生成目標句子。</p>
+<h2 id="注意力机制">注意力机制</h2>
+<p>但是當訊息太長時，seq2seq 容易丟失訊息，因此引入了注意力機制 (Attention Mechanism)。其概念為將 Encoder 所有資訊都傳給 Decoder，讓 Decoder 決定把注意力放在哪些資訊上。有兩篇經典的代表論文：Neural Machine Translation by Jointly Learning to Align and Translate、Effective Approaches to Attention-based Neural Machine Translation。</p>
+<h2 id="编码器">编码器</h2>
+<p>先來看左邊的 Encoder 部分，input 先經過 embedding 層轉換為一個向量，然後在進入 layer 前會先與 Positional Encoding 相加 (Input Embedding 跟 Positional Encoding 的維度相等)，這個 Positional Encoding 就是詞語的位置編碼，目的是為了讓模型考慮詞語之間的順序。</p>
+<p>論文使用 sin, cos 函數進行位置編碼，公式如下，其中 pos 為詞語在序列中的位置、2i, 2i+1 為該詞語在 Positional Encoding 維度上的 index、d_model 為 Positional Encoding 的維度 (與 Input Embedding 維度相等)，預設值為 512。</p>
+<p>這樣講可能覺得有點難以理解，來舉個例子，假設要計算序列中的第二個詞語，此時 pos=1，則 Positional Encoding (PE) 為以下樣子</p>
+<p>❓ 為什麼要使用 sin, cos 函數進行編碼?</p>
+<p>因為 sin, cos 函數可以表示為兩個向量間的線性關係，能夠呈現不同詞語之間的相對位置，並且不受限序列長度的限制，比較不會有重複的問題。</p>
+<p>资源
+此外，sin, cos 函數有上下界 (落於 [0, 1] 之間)、穩定循環的性質。</p>
+<p>资源
+❓ 為什麼是與 Positional Encoding 相加，而不是 concat ?</p>
+<p>因為其實做相加得到的結果與 concat 是相同的。假設有一輸入序列 xi，其位置使用簡單的 one-hot encoding 表示為 pi=(0, …, 1, 0)，W_x, W_p 為其相對應的權重。</p>
+<p>將 W_x, W_p 合併為 W，xi, pi 合併為 X，而 W 與 X 的 Inner Product 可經由線性代數的性質，拆分為 W_x 跟 xi 的 Inner Product + W_p 跟 pi 的 Inner Product。因此可以得知 Input Embedding 與 Positional Encoding 相加所得到的結果跟兩者 concat 是一樣的。</p>
+<p>多头注意力</p>
+<p>Input Embedding 與 Positional Encoding 相加後會進入到 layer 裡，Encoder 有兩個子層 Multi-head Attention、Feed Forward。在介紹 Multi-head Attention 之前，先來說明自注意機制 (self-attention mechanism)</p>
+<p>自注意机制
+自注意力機制有三個重要的參數 q, k, v，而這些參數是由 input xi 經過 embedding 層轉換為 ai，接著 ai 進入到 self-attention layer 會乘上三個不同的 matrix 所得到的。</p>
+<p>q (query): 是指當前的詞向量，用於對每個 key 做匹配程度的打分</p>
+<p>k (key): 是指序列中的所有詞向量</p>
+<p>v (value): 是指實際的序列內容</p>
+<p>由下圖可以看到 q1 會對每一個 k 做 Inner Product 得到 q, k 之間匹配的相似程度 α1, 1、α1, 2、…，然後做一系列的運算得到輸出，這些計算步驟稱為 Scaled Dot-Product Attention</p>
+<p>资源
+缩放点积注意力
+接著來看數學式子會更了解，由下列公式得知 q, k 會先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 後，再做 softmax 計算出 v 的權重，最後將該權重與 v 做加權運算，其中 q, k 維度都為 dk，v 維度為 dv。</p>
+<p>看到這裡可能會疑惑為什麼要除以 sqrt(dk)? 之所以這樣做的原因是為了避免當 dk (q, k 的維度) 太大時，q, k Inner Product 的值過大，softmax 計算的值落入飽和區而導致梯度不穩定。</p>
+<p>多头注意力
+終於要來介紹 Multi-Head Attention 啦~ 其運算方式與 self-attention mechanism 相同，差異在於會先將 q, k, v 拆分成多個低維度的向量，由下圖可看到若假設 head=2，qi 會拆分成 qi,1、qi,2，接著繼續跟上述一樣的步驟，最後再把這些 head 輸出 concat 起來做一次線性計算。</p>
+<p>這樣的好處是能夠讓各個 head (q, k, v) 關注不同的資訊，有些關注 local、有些關注 global 資訊等。</p>
+<p>资源
+由下圖可看到 q, k, v 會做 h 次的線性映射到低維度的向量，再進行 Scaled Dot-Product Attention，最後將其 concat、linear 得到輸出。</p>
+<p>以下是 Multi-Head 公式，其中 h=8、dk=dv=d_model/h</p>
+<p>添加和规范</p>
+<p>經過 Multi-head Attention 後會進入 Add &amp; Norm 層，這一層是指 residual connection 及 layer normalization。前一層的輸出 Sublayer 會與原輸入 x 相加 (residual connection)，以減緩梯度消失的問題，然後再做 layer normalization。</p>
+<p>📚 层归一化与批量归一化</p>
+<p>在之前的文章有介紹過 Batch Normalization (BN)，其作法是在每一個 mini-batch 的 input feature 做 normalize，這樣的方式雖然在 CNN 上獲得了很好的效果，但仍然存在一些缺點：</p>
+<p>過於依賴 batch size，如果 batch size 太小，BN 的效果會明顯下降。
+不太適用於時間序列，因為文本序列的長度通常不一致，強制對每個文本執行 BN 不大合理。
+因此在 RNN 中較常使用 Layer Normalization (LN)，概念與 BN 類似，差別在於 LN 是對每一個樣本進行 normalize。由下圖可以很清楚的看出兩者的差異，其中每一行是指樣本，每一列是樣本特徵。</p>
+<p>资源
+位置前馈网络（前馈）</p>
+<p>接著進入到 FFN 層，由下列公式可以看到輸入 x 先做線性運算後，送入 ReLU，再做一次線性運算。其中輸入輸出的維度 d_model=512，而中間層的維度 dff = 2048</p>
+<h2 id="解码器">解码器</h2>
+<p>看到這裡已經理解 Encoder 的運算過程了，再來看右邊 Decoder 的部分吧！</p>
+<p>Decoder 與 Encoder 一樣會先跟 Positional Encoding 相加再進入 layer，不同的是 Decoder 有三個子層 Masked Multi-head Attention、Multi-head Attention、Feed Forward。此外，中間層 Multi-head Attention 的輸入 q 來自於本身前一層的輸出，而 k, v 則是來自於 Encoder 的輸出。</p>
+<p>蒙面多头注意力</p>
+<p>由於其他兩層跟 Encoder 大致相同，所以就跳過來介紹 Decoder 中才有的 Masked Multi-head Attention。</p>
+<p>Transformer 的 Mask 機制有兩種：Padding Mask、Sequence Mask</p>
+<p>Padding Mask 在 Encoder和 Decoder 中都有使用到，目的是為了限制每個輸入的長度要相同，對於較短的句子會將不足的部分補 0
+Sequence Mask 只用於 Decoder，目的是為了防止模型看到未來的資訊，因此在超過當前時刻 t 的輸出會加上一個 mask，確保模型的預測只依賴小於當前時刻的輸出。
+Sequence Mask 的做法是通過一個上三角矩陣來實現，將這些區域的值都設定為負無窮，如此一來這些元素經過 softmax 後都會變為 0 以達到 mask 的效果。</p>
+<h2 id="链接">链接</h2>
+<p>📝 <a class="link" href="https://arxiv.org/abs/1706.03762"  target="_blank" rel="noopener"
+    >Transformer论文</a></p>
 
 </section>
 
@@ -326,7 +386,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/transformer/">transformer</a>
+            <a href="/tags/transformer/">Transformer</a>
         
     </section>
 
@@ -381,8 +441,6 @@
 
     
 
-    
-
 
 <script>
     (function(u, c) {
@@ -402,7 +460,7 @@
             2020 - 
         
         2022 一片生菜叶
-        共码了0.9k字·共 4篇文章</br><span><p></p>
+        共码了1k字·共 3篇文章</br><span><p></p>
         </section>
 
     
@@ -506,7 +564,42 @@ document.getElementById('days').innerHTML = number_of_days;
             >
 
             </main>
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#seq2seq">Seq2Seq</a></li>
+    <li><a href="#注意力机制">注意力机制</a></li>
+    <li><a href="#编码器">编码器</a></li>
+    <li><a href="#解码器">解码器</a></li>
+    <li><a href="#链接">链接</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
         </div>
         <script 
