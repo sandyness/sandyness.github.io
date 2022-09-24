@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>阅读笔记 on 一片生菜叶</title>
+        <link>https://sandyness.github.io/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
+        <description>Recent content in 阅读笔记 on 一片生菜叶</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 07 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Transformer论文阅读</title>
+        <link>https://sandyness.github.io/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</link>
+        <pubDate>Sun, 07 Aug 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</guid>
+        <description>&lt;h1 id=&#34;part-1-sequence-to-sequence-learning-and-attention&#34;&gt;Part 1: Sequence to Sequence Learning and Attention&lt;/h1&gt;
+&lt;p&gt;论文“Attention Is All You Need”描述了转换器和所谓的序列到序列架构。Seq2Seq是一种神经网络，它将给定的元素序列（例如句子中的单词序列）转换为另一个序列。（好吧，考虑到这个名字，这可能不会让你感到惊讶。）Seq2Seq 模型特别擅长翻译，将一种语言的单词序列转换为另一种语言的不同单词序列。此类模型的一个流行选择是基于长短期记忆 (LSTM) 的模型。对于依赖于序列的数据，LSTM 模块可以赋予序列意义，同时记住（或忘记）它认为重要（或不重要）的部分。例如，句子是依赖于顺序的，因为单词的顺序对于理解句子至关重要。LSTM 是此类数据的自然选择。&lt;/p&gt;
+&lt;p&gt;Seq2Seq 模型由一个 Encoder 和一个 Decoder 组成。Encoder 获取输入序列并将其映射到更高维空间（n 维向量）。该抽象向量被输入解码器，解码器将其转换为输出序列。输出序列可以是另一种语言、符号、输入的副本等。&lt;/p&gt;
+&lt;p&gt;将编码器和解码器想象成只能说两种语言的人工翻译。他们的第一语言是他们的母语，这在他们两者之间是不同的（例如德语和法语），而他们的第二语言是他们共同的想象语言。为了将德语翻译成法语，编码器将德语句子转换成它所知道的另一种语言，即想象的语言。由于解码器能够读取该想象中的语言，它现在可以从该语言翻译成法语。该模型（由编码器和解码器组成）一起可以将德语翻译成法语！&lt;/p&gt;
+&lt;p&gt;假设一开始，编码器和解码器都不是很流利的想象语言。为了学习它，我们在很多例子上训练他们（模型）。Seq2Seq 模型的编码器和解码器的一个非常基本的选择是它们每个都使用一个 LSTM。&lt;/p&gt;
+&lt;p&gt;你想知道变形金刚什么时候最终会发挥作用，不是吗？&lt;/p&gt;
+&lt;p&gt;我们还需要一个技术细节来让 Transformer 更容易理解：注意力。注意力机制查看输入序列，并在每个步骤中决定序列的哪些其他部分是重要的。这听起来很抽象，但让我用一个简单的例子来澄清一下：阅读这篇文章时，你总是把注意力集中在你读过的单词上，但同时你的大脑仍然会记住文本中的重要关键词，以便提供上下文。&lt;/p&gt;
+&lt;p&gt;对于给定的序列，注意力机制的工作方式类似。对于我们的人类编码器和解码器的例子，想象一下，编码器不仅用想象的语言写下句子的翻译，还写下对句子语义很重要的关键字，并将它们提供给解码器除了常规翻译。这些新关键字使解码器的翻译变得更加容易，因为它知道句子的哪些部分是重要的，哪些关键术语给出了句子的上下文。&lt;/p&gt;
+&lt;p&gt;换句话说，对于 LSTM（编码器）读取的每个输入，注意力机制会同时考虑几个其他输入，并通过为这些输入赋予不同的权重来决定哪些是重要的。然后，解码器将编码的句子和注意力机制提供的权重作为输入。要了解有关注意力的更多信息，请参阅这篇文章。对于比所提供的更科学的方法，请阅读这篇名为“基于注意力的神经机器翻译的有效方法”的伟大论文中关于序列到序列模型的不同基于注意力的方法。&lt;/p&gt;
+&lt;h1 id=&#34;heading&#34;&gt;&lt;/h1&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

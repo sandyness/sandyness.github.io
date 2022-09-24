@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='who I am'><title>About Me</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Attention Is All You Need'><title>Transformer论文阅读</title>
 
-<link rel='canonical' href='https://sandyness.github.io/about-me/'>
+<link rel='canonical' href='https://sandyness.github.io/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
 
-<link rel="stylesheet" href="/scss/style.min.e785be5694fead519c65a26ede61882aabd8e231c7f2714b855c0b8c4d508927.css"><meta property='og:title' content='About Me'>
-<meta property='og:description' content='who I am'>
-<meta property='og:url' content='https://sandyness.github.io/about-me/'>
+<link rel="stylesheet" href="/scss/style.min.e785be5694fead519c65a26ede61882aabd8e231c7f2714b855c0b8c4d508927.css"><meta property='og:title' content='Transformer论文阅读'>
+<meta property='og:description' content='Attention Is All You Need'>
+<meta property='og:url' content='https://sandyness.github.io/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
 <meta property='og:site_name' content='一片生菜叶'>
-<meta property='og:type' content='article'><meta property='article:section' content='Page' /><meta property='article:published_time' content='2022-02-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-08-22T00:00:00&#43;00:00'/>
-<meta name="twitter:title" content="About Me">
-<meta name="twitter:description" content="who I am"><style>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='transformer' /><meta property='article:published_time' content='2022-08-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-08-07T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Transformer论文阅读">
+<meta name="twitter:description" content="Attention Is All You Need"><style>
     :root {
         --article-font-family: "Noto Serif SC", var(--base-font-family);
     }
@@ -194,7 +194,7 @@
         
         
 
-        <li  class='current' >
+        <li >
             <a href='/about-me/' >
                 
                 
@@ -245,15 +245,23 @@
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" >
+                阅读笔记
+            </a>
+        
+    </header>
+    
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/about-me/">About Me</a>
+            <a href="/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">Transformer论文阅读</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            who I am
+            Attention Is All You Need
         </h3>
         
     </div>
@@ -271,7 +279,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Feb 28, 2022</time>
+                <time class="article-time--published">Aug 07, 2022</time>
             </div>
         
 
@@ -300,46 +308,30 @@
     <section class="article-content">
     
     
-    <h2 id="自我认识">自我认识</h2>
-<ul>
-<li>不给自己设限</li>
-<li>好奇心</li>
-<li>自驱力</li>
-<li>终身学习</li>
-<li>喜欢探索新技术，空余时间也折腾notion各种效率工具</li>
-</ul>
-<h2 id="正在探索的交叉学科">正在探索的交叉学科</h2>
-<ul>
-<li>商业</li>
-<li>哲学</li>
-<li>社会科学</li>
-</ul>
-<h2 id="热爱的事">热爱的事</h2>
-<ul>
-<li>滑板</li>
-<li>播客</li>
-<li>冥想</li>
-</ul>
+    <h1 id="part-1-sequence-to-sequence-learning-and-attention">Part 1: Sequence to Sequence Learning and Attention</h1>
+<p>论文“Attention Is All You Need”描述了转换器和所谓的序列到序列架构。Seq2Seq是一种神经网络，它将给定的元素序列（例如句子中的单词序列）转换为另一个序列。（好吧，考虑到这个名字，这可能不会让你感到惊讶。）Seq2Seq 模型特别擅长翻译，将一种语言的单词序列转换为另一种语言的不同单词序列。此类模型的一个流行选择是基于长短期记忆 (LSTM) 的模型。对于依赖于序列的数据，LSTM 模块可以赋予序列意义，同时记住（或忘记）它认为重要（或不重要）的部分。例如，句子是依赖于顺序的，因为单词的顺序对于理解句子至关重要。LSTM 是此类数据的自然选择。</p>
+<p>Seq2Seq 模型由一个 Encoder 和一个 Decoder 组成。Encoder 获取输入序列并将其映射到更高维空间（n 维向量）。该抽象向量被输入解码器，解码器将其转换为输出序列。输出序列可以是另一种语言、符号、输入的副本等。</p>
+<p>将编码器和解码器想象成只能说两种语言的人工翻译。他们的第一语言是他们的母语，这在他们两者之间是不同的（例如德语和法语），而他们的第二语言是他们共同的想象语言。为了将德语翻译成法语，编码器将德语句子转换成它所知道的另一种语言，即想象的语言。由于解码器能够读取该想象中的语言，它现在可以从该语言翻译成法语。该模型（由编码器和解码器组成）一起可以将德语翻译成法语！</p>
+<p>假设一开始，编码器和解码器都不是很流利的想象语言。为了学习它，我们在很多例子上训练他们（模型）。Seq2Seq 模型的编码器和解码器的一个非常基本的选择是它们每个都使用一个 LSTM。</p>
+<p>你想知道变形金刚什么时候最终会发挥作用，不是吗？</p>
+<p>我们还需要一个技术细节来让 Transformer 更容易理解：注意力。注意力机制查看输入序列，并在每个步骤中决定序列的哪些其他部分是重要的。这听起来很抽象，但让我用一个简单的例子来澄清一下：阅读这篇文章时，你总是把注意力集中在你读过的单词上，但同时你的大脑仍然会记住文本中的重要关键词，以便提供上下文。</p>
+<p>对于给定的序列，注意力机制的工作方式类似。对于我们的人类编码器和解码器的例子，想象一下，编码器不仅用想象的语言写下句子的翻译，还写下对句子语义很重要的关键字，并将它们提供给解码器除了常规翻译。这些新关键字使解码器的翻译变得更加容易，因为它知道句子的哪些部分是重要的，哪些关键术语给出了句子的上下文。</p>
+<p>换句话说，对于 LSTM（编码器）读取的每个输入，注意力机制会同时考虑几个其他输入，并通过为这些输入赋予不同的权重来决定哪些是重要的。然后，解码器将编码的句子和注意力机制提供的权重作为输入。要了解有关注意力的更多信息，请参阅这篇文章。对于比所提供的更科学的方法，请阅读这篇名为“基于注意力的神经机器翻译的有效方法”的伟大论文中关于序列到序列模型的不同基于注意力的方法。</p>
+<h1 id="heading"></h1>
 
 </section>
 
 
     <footer class="article-footer">
     
-
-    <section class="article-lastmod">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
+    <section class="article-tags">
+        
+            <a href="/tags/transformer/">transformer</a>
+        
+    </section>
 
 
-
-        <span>
-            Last updated on Aug 22, 2022
-        </span>
-    </section></footer>
+    </footer>
 
 
     
@@ -514,40 +506,7 @@ document.getElementById('days').innerHTML = number_of_days;
             >
 
             </main>
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#自我认识">自我认识</a></li>
-    <li><a href="#正在探索的交叉学科">正在探索的交叉学科</a></li>
-    <li><a href="#热爱的事">热爱的事</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
+    
 
         </div>
         <script 
