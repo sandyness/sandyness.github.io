@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Bidirectional Encoder Representations from Transformers'><title>BERT论文阅读</title>
+
+<link rel='canonical' href='https://sandyness.github.io/p/bert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
+
+<link rel="stylesheet" href="/scss/style.min.e785be5694fead519c65a26ede61882aabd8e231c7f2714b855c0b8c4d508927.css"><meta property='og:title' content='BERT论文阅读'>
+<meta property='og:description' content='Bidirectional Encoder Representations from Transformers'>
+<meta property='og:url' content='https://sandyness.github.io/p/bert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
+<meta property='og:site_name' content='一片生菜叶'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='NLP' /><meta property='article:published_time' content='2022-08-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-08-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="BERT论文阅读">
+<meta name="twitter:description" content="Bidirectional Encoder Representations from Transformers"><style>
+    :root {
+        --article-font-family: "Noto Serif SC", var(--base-font-family);
+    }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap";
+    
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+    
+        document.head.appendChild(customFont);
+    }());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/icon_hub5ec3c5f4b9bb9f0cd544d31dc49db31_30948_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">一片生菜叶</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sandyness'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/categories/test/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>Categories</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About Me</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" >
+                阅读笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/bert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">BERT论文阅读</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Bidirectional Encoder Representations from Transformers
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 09, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>BERT是Google AI Language 的研究人员最近发表的一篇论文。它通过在包括问答 (SQuAD v1.1)、自然语言推理 (MNLI) 等在内的各种 NLP 任务中展示最先进的结果，在机器学习社区引起了轰动。</p>
+<p>BERT 的关键技术创新是将流行的注意力模型Transformer的双向训练应用于语言建模。这与以前从左到右或从左到右和从右到左组合的训练中查看文本序列的努力形成对比。论文的结果表明，双向训练的语言模型比单向语言模型可以更深入地感知语言上下文和流。在论文中，研究人员详细介绍了一种名为 Masked LM (MLM) 的新技术，该技术允许在以前不可能的模型中进行双向训练。</p>
+<h2 id="背景">背景</h2>
+<p>在计算机视觉领域，研究人员反复展示了迁移学习的价值——在已知任务上预训练神经网络模型，例如 ImageNet，然后进行微调——使用训练好的神经网络作为新的特定用途模型。近年来，研究人员已经证明，类似的技术可以用于许多自然语言任务。</p>
+<p>另一种在 NLP 任务中也很流行并在最近的 ELMo 论文中得到例证的方法是基于特征的训练。在这种方法中，预训练的神经网络生成词嵌入，然后将其用作 NLP 模型中的特征。</p>
+<h2 id="bert-的工作原理">BERT 的工作原理</h2>
+<p>BERT 使用了 Transformer，这是一种学习文本中单词（或子词）之间上下文关系的注意力机制。在其普通形式中，Transformer 包括两个独立的机制——一个读取文本输入的编码器和一个为任务生成预测的解码器。由于 BERT 的目标是生成语言模型，因此只需要编码器机制。谷歌的一篇论文中描述了 Transformer 的详细工作原理。</p>
+<p>与按顺序（从左到右或从右到左）读取文本输入的定向模型相反，Transformer 编码器一次读取整个单词序列。因此它被认为是双向的，尽管说它是非定向的会更准确。这一特性允许模型根据其所有周围环境（单词的左侧和右侧）来学习单词的上下文。</p>
+<p>下图是 Transformer 编码器的高级描述。输入是一系列标记，它们首先嵌入到向量中，然后在神经网络中进行处理。输出是一个大小为 H 的向量序列，其中每个向量对应一个具有相同索引的输入标记。</p>
+<p>在训练语言模型时，定义预测目标是一个挑战。许多模型预测序列中的下一个单词（例如“孩子从___回家”），这种定向方法本质上限制了上下文学习。为了克服这一挑战，BERT 使用了两种训练策略：</p>
+<ul>
+<li>
+<p>Masked LM (MLM)
+在将单词序列输入 BERT 之前，每个序列中 15% 的单词被替换为 [MASK] 标记。然后，该模型尝试根据序列中其他非掩码单词提供的上下文来预测掩码单词的原始值。用技术术语来说，输出词的预测需要：</p>
+<p>在编码器输出之上添加一个分类层。
+将输出向量乘以嵌入矩阵，将它们转换为词汇维度。
+用 softmax 计算词汇表中每个单词的概率。
+BERT 损失函数只考虑了对掩码值的预测，而忽略了对非掩码词的预测。因此，该模型的收敛速度比定向模型慢，这一特征被其增强的上下文感知所抵消（参见要点 #3）。</p>
+</li>
+<li>
+<p>Next Sentence Prediction (NSP)
+在 BERT 训练过程中，模型接收成对的句子作为输入，并学习预测该对中的第二个句子是否是原始文档中的后续句子。在训练期间，50% 的输入是一对，其中第二个句子是原始文档中的后续句子，而在另外 50% 的输入中，从语料库中随机选择一个句子作为第二个句子。假设是随机句子将与第一句断开连接。为了帮助模型在训练中区分两个句子，输入在进入模型之前按如下方式处理：在第一句的开头插入一个 [CLS] 标记，在每个句子的结尾插入一个 [SEP] 标记将指示句子 A 或句子 B 的句子嵌入添加到每个标记中。句子嵌入在概念上类似于词汇表为 2 的标记嵌入。
+位置嵌入被添加到每个标记以指示其在序列中的位置。Transformer 论文中介绍了位置嵌入的概念和实现。
+为了预测第二个句子是否确实与第一个句子相关，执行以下步骤：</p>
+<p>整个输入序列通过 Transformer 模型。
+使用简单的分类层（权重和偏差的学习矩阵）将 [CLS] 标记的输出转换为 2×1 形状的向量。
+用 softmax 计算 IsNextSequence 的概率。
+在训练 BERT 模型时，Masked LM 和 Next Sentence Prediction 一起训练，目标是最小化这两种策略的组合损失函数。</p>
+</li>
+</ul>
+<h2 id="如何使用-bert微调">如何使用 BERT（微调）</h2>
+<p>将 BERT 用于特定任务相对简单：</p>
+<p>BERT 可用于多种语言任务，同时仅在核心模型中添加了一小层：</p>
+<p>情感分析等分类任务的完成与 Next Sentence 分类类似，方法是在 [CLS] 令牌的 Transformer 输出之上添加一个分类层。
+在问答任务（例如 SQuAD v1.1）中，软件接收有关文本序列的问题，并且需要在序列中标记答案。使用 BERT，可以通过学习两个标记答案开始和结束的额外向量来训练问答模型。
+在命名实体识别 (NER) 中，软件接收文本序列并需要标记文本中出现的各种类型的实体（人、组织、日期等）。使用 BERT，可以通过将每个标记的输出向量输入到预测 NER 标签的分类层来训练 NER 模型。
+在微调训练中，大多数超参数与 BERT 训练中保持一致，论文对需要调优的超参数给出了具体指导（第 3.5 节）。BERT 团队已经使用这种技术在各种具有挑战性的自然语言任务上取得了最先进的结果，详见论文的第 4 节。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/nlp/">NLP</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Transformer论文阅读</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cnn%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D-resnet/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CNN经典模型介绍-ResNet</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cnn%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D-alexnet/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CNN经典模型介绍-AlexNet</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"lang":{"default":"zh-CN","type":"string"},"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":{"required":true,"type":"string"}});
+</script>
+
+    
+
+    <footer class="site-footer">
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/3.3.0/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+        <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 一片生菜叶
+        共码了1.6k字·共 7篇文章</br><span><p></p>
+        </section>
+
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+<script>
+var s1 = '2021-02-12';
+s1 = new Date(s1.replace(/-/g, "/"));
+s2 = new Date();
+var days = s2.getTime() - s1.getTime();
+var number_of_days = parseInt(days / (1000 * 60 * 60 * 24));
+document.getElementById('days').innerHTML = number_of_days;
+</script>
+</footer>
+
+
+
+
+
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#bert-的工作原理">BERT 的工作原理</a></li>
+    <li><a href="#如何使用-bert微调">如何使用 BERT（微调）</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

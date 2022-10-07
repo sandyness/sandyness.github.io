@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>学习笔记 on 一片生菜叶</title>
+        <link>https://sandyness.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <description>Recent content in 学习笔记 on 一片生菜叶</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sat, 08 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>算法工程师学习笔记</title>
+        <link>https://sandyness.github.io/p/%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <pubDate>Sat, 08 Aug 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;h2 id=&#34;数据处理&#34;&gt;数据处理&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数值特征的处理&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缩放稀疏数据的处理&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;[MaxAbsScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler)&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;to array&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;类别型特种的处理&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;oridinal encoder:具有大小关系的类别特征（eg.成绩高中低）&lt;/li&gt;
+&lt;li&gt;one-hot encoder：不具有大小关系的类别特征（eg.血型）&lt;/li&gt;
+&lt;li&gt;二进制编码&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文本表示模型&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;bag of words&lt;/li&gt;
+&lt;li&gt;n-gram模型&lt;/li&gt;
+&lt;li&gt;主题模型&lt;/li&gt;
+&lt;li&gt;word2vec&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;图像数据不足带来的问题？&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;过拟合&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;图像数据不足时的处理方法？&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;数据：
+&lt;ol&gt;
+&lt;li&gt;数据增强&lt;/li&gt;
+&lt;li&gt;GAN&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;模型：
+&lt;ol&gt;
+&lt;li&gt;简化模型&lt;/li&gt;
+&lt;li&gt;添加约束项缩小假设空间（l1 or l2正则项）&lt;/li&gt;
+&lt;li&gt;集成学习&lt;/li&gt;
+&lt;li&gt;dropout超参数设置&lt;/li&gt;
+&lt;li&gt;迁移学习：fine-tune已经训练好的模型&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;模型评估&#34;&gt;模型评估&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;交叉验证&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;回归问题&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;离群：平均绝对百分比误差（MASE）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分类问题&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;准确率&lt;/li&gt;
+&lt;li&gt;精确率&lt;/li&gt;
+&lt;li&gt;召回率&lt;/li&gt;
+&lt;li&gt;p-r曲线&lt;/li&gt;
+&lt;li&gt;f1值和roc曲线&lt;/li&gt;
+&lt;li&gt;auc曲线&lt;/li&gt;
+&lt;li&gt;混淆矩阵&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;超参数调优&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;网格搜索：一般采用较广的搜索范围和较广的步长&lt;/li&gt;
+&lt;li&gt;随机搜索&lt;/li&gt;
+&lt;li&gt;贝叶斯优化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

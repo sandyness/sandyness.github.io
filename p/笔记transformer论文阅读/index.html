@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Attention Is All You Need'><title>笔记｜Transformer论文阅读</title>
+
+<link rel='canonical' href='https://sandyness.github.io/p/%E7%AC%94%E8%AE%B0transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
+
+<link rel="stylesheet" href="/scss/style.min.e785be5694fead519c65a26ede61882aabd8e231c7f2714b855c0b8c4d508927.css"><meta property='og:title' content='笔记｜Transformer论文阅读'>
+<meta property='og:description' content='Attention Is All You Need'>
+<meta property='og:url' content='https://sandyness.github.io/p/%E7%AC%94%E8%AE%B0transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/'>
+<meta property='og:site_name' content='一片生菜叶'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='NLP' /><meta property='article:published_time' content='2022-08-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-08-07T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="笔记｜Transformer论文阅读">
+<meta name="twitter:description" content="Attention Is All You Need"><style>
+    :root {
+        --article-font-family: "Noto Serif SC", var(--base-font-family);
+    }
+</style>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap";
+    
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+    
+        document.head.appendChild(customFont);
+    }());
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/icon_hub5ec3c5f4b9bb9f0cd544d31dc49db31_30948_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">一片生菜叶</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sandyness'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>Categories</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About Me</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" >
+                阅读笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E7%AC%94%E8%AE%B0transformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">笔记｜Transformer论文阅读</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Attention Is All You Need
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 07, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，
+因此Google提出了一种不使用RNN和CNN,而是使用叫<strong>自注意力机制(self-attention mechanism)-Transformer</strong>。其网络架构是基于 Seq2Seq + self-attention mechanism。</p>
+<h2 id="seq2seq">Seq2Seq</h2>
+<p>Seq2Seq主要由两篇论文提出：</p>
+<ul>
+<li><a class="link" href="https://arxiv.org/abs/1409.3215"  target="_blank" rel="noopener"
+    >Sequence to Sequence Learning with Neural Networks</a></li>
+<li><a class="link" href="https://arxiv.org/abs/1406.1078"  target="_blank" rel="noopener"
+    >Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</a></li>
+</ul>
+<p>两者差别是前者使用LSTM，后者使用GRU。</p>
+<h2 id="注意力机制">注意力机制</h2>
+<p>但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
+有两篇论文：</p>
+<ul>
+<li>Neural Machine Translation by Jointly Learning to Align and Translate</li>
+<li>Effective Approaches to Attention-based Neural Machine Translation</li>
+</ul>
+<h2 id="编码器">编码器</h2>
+<p>Encoder部分，input 先經過 embedding 層轉換為一個向量，然後在進入 layer 前會先與 Positional Encoding 相加 (Input Embedding 跟 Positional Encoding 的維度相等)，這個 Positional Encoding 就是詞語的位置編碼，目的是為了讓模型考慮詞語之間的順序。</p>
+<p>論文使用 sin, cos 函數進行位置編碼，公式如下，其中 pos 為詞語在序列中的位置、2i, 2i+1 為該詞語在 Positional Encoding 維度上的 index、d_model 為 Positional Encoding 的維度 (與 Input Embedding 維度相等)，預設值為 512。</p>
+<p>這樣講可能覺得有點難以理解，來舉個例子，假設要計算序列中的第二個詞語，此時 pos=1，則 Positional Encoding (PE) 為以下樣子</p>
+<p>❓ 為什麼要使用 sin, cos 函數進行編碼?</p>
+<p>因為 sin, cos 函數可以表示為兩個向量間的線性關係，能夠呈現不同詞語之間的相對位置，並且不受限序列長度的限制，比較不會有重複的問題。</p>
+<p>此外，sin, cos 函數有上下界 (落於 [0, 1] 之間)、穩定循環的性質。</p>
+<p>❓ 為什麼是與 Positional Encoding 相加，而不是 concat ?</p>
+<p>因為其實做相加得到的結果與 concat 是相同的。假設有一輸入序列 xi，其位置使用簡單的 one-hot encoding 表示為 pi=(0, …, 1, 0)，W_x, W_p 為其相對應的權重。</p>
+<p>將 W_x, W_p 合併為 W，xi, pi 合併為 X，而 W 與 X 的 Inner Product 可經由線性代數的性質，拆分為 W_x 跟 xi 的 Inner Product + W_p 跟 pi 的 Inner Product。因此可以得知 Input Embedding 與 Positional Encoding 相加所得到的結果跟兩者 concat 是一樣的。</p>
+<ul>
+<li>
+<p>多头注意力</p>
+<p>Input Embedding 與 Positional Encoding 相加後會進入到 layer 裡，Encoder 有兩個子層 Multi-head Attention、Feed Forward。在介紹 Multi-head Attention 之前，先來說明自注意機制 (self-attention mechanism)</p>
+</li>
+<li>
+<p>自注意机制</p>
+<p>自注意力機制有三個重要的參數 q, k, v，而這些參數是由 input xi 經過 embedding 層轉換為 ai，接著 ai 進入到 self-attention layer 會乘上三個不同的 matrix 所得到的。</p>
+<p>q (query): 是指當前的詞向量，用於對每個 key 做匹配程度的打分</p>
+<p>k (key): 是指序列中的所有詞向量</p>
+<p>v (value): 是指實際的序列內容</p>
+</li>
+<li>
+<p>多头注意力</p>
+<p>Multi-Head Attention 其運算方式與 self-attention mechanism 相同，差異在於會先將 q, k, v 拆分成多個低維度的向量，由下圖可看到若假設 head=2，qi 會拆分成 qi,1、qi,2，接著繼續跟上述一樣的步驟，最後再把這些 head 輸出 concat 起來做一次線性計算。這樣的好處是能夠讓各個 head (q, k, v) 關注不同的資訊，有些關注 local、有些關注 global 資訊等。</p>
+</li>
+<li>
+<p>添加和规范</p>
+<p>經過 Multi-head Attention 後會進入 Add &amp; Norm 層，這一層是指 residual connection 及 layer normalization。前一層的輸出 Sublayer 會與原輸入 x 相加 (residual connection)，以減緩梯度消失的問題，然後再做 layer normalization。</p>
+</li>
+<li>
+<p>层归一化与批量归一化</p>
+<p>在之前的文章有介紹過 Batch Normalization (BN)，其作法是在每一個 mini-batch 的 input feature 做 normalize，這樣的方式雖然在 CNN 上獲得了很好的效果，但仍然存在一些缺點：過於依賴 batch size，如果 batch size 太小，BN 的效果會明顯下降。不太適用於時間序列，因為文本序列的長度通常不一致，強制對每個文本執行 BN 不大合理。
+因此在 RNN 中較常使用 Layer Normalization (LN)，概念與 BN 類似，差別在於 LN 是對每一個樣本進行 normalize。由下圖可以很清楚的看出兩者的差異，其中每一行是指樣本，每一列是樣本特徵。</p>
+</li>
+<li>
+<p>位置前馈网络（前馈）</p>
+<p>接著進入到 FFN 層，由下列公式可以看到輸入 x 先做線性運算後，送入 ReLU，再做一次線性運算。其中輸入輸出的維度 d_model=512，而中間層的維度 dff = 2048</p>
+</li>
+</ul>
+<h2 id="解码器">解码器</h2>
+<p>看到這裡已經理解 Encoder 的運算過程了，再來看右邊 Decoder 的部分吧！</p>
+<p>Decoder 與 Encoder 一樣會先跟 Positional Encoding 相加再進入 layer，不同的是 Decoder 有三個子層 Masked Multi-head Attention、Multi-head Attention、Feed Forward。此外，中間層 Multi-head Attention 的輸入 q 來自於本身前一層的輸出，而 k, v 則是來自於 Encoder 的輸出。</p>
+<p><strong>掩码多头注意（Masked Multi-head Attention）</strong></p>
+<p>由於其他兩層跟 Encoder 大致相同，所以就跳過來介紹 Decoder 中才有的 Masked Multi-head Attention。</p>
+<p>Transformer 的 Mask 機制有兩種：Padding Mask、Sequence Mask</p>
+<p>Padding Mask 在 Encoder和 Decoder 中都有使用到，目的是為了限制每個輸入的長度要相同，對於較短的句子會將不足的部分補 0
+Sequence Mask 只用於 Decoder，目的是為了防止模型看到未來的資訊，因此在超過當前時刻 t 的輸出會加上一個 mask，確保模型的預測只依賴小於當前時刻的輸出。
+Sequence Mask 的做法是通過一個上三角矩陣來實現，將這些區域的值都設定為負無窮，如此一來這些元素經過 softmax 後都會變為 0 以達到 mask 的效果。</p>
+<h2 id="链接">链接</h2>
+<p>📝 <a class="link" href="https://arxiv.org/abs/1706.03762"  target="_blank" rel="noopener"
+    >Transformer论文</a></p>
+<h2 id="heading"></h2>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/nlp/">NLP</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%94%E8%AE%B0bert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">笔记｜BERT论文阅读</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%94%E8%AE%B0resnet/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">笔记｜ResNet</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%94%E8%AE%B0alexnet/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">笔记｜AlexNet</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"lang":{"default":"zh-CN","type":"string"},"locale":{"admin":"Admin","placeholder":null},"requiredMeta":["name","email","url"],"serverURL":{"required":true,"type":"string"}});
+</script>
+
+    
+
+    <footer class="site-footer">
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<script>
+    (function(u, c) {
+      var d = document, t = 'script', o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function(e) { c(e); }); }
+      s.parentNode.insertBefore(o, s);
+    })('//cdn.bootcss.com/pangu/3.3.0/pangu.min.js', function() {
+      pangu.spacingPage();
+    });
+</script>
+
+        <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 一片生菜叶
+        共码了1.6k字·共 7篇文章</br><span><p></p>
+        </section>
+
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.13.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+<script>
+var s1 = '2021-02-12';
+s1 = new Date(s1.replace(/-/g, "/"));
+s2 = new Date();
+var days = s2.getTime() - s1.getTime();
+var number_of_days = parseInt(days / (1000 * 60 * 60 * 24));
+document.getElementById('days').innerHTML = number_of_days;
+</script>
+</footer>
+
+
+
+
+
+
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#seq2seq">Seq2Seq</a></li>
+    <li><a href="#注意力机制">注意力机制</a></li>
+    <li><a href="#编码器">编码器</a></li>
+    <li><a href="#解码器">解码器</a></li>
+    <li><a href="#链接">链接</a></li>
+    <li><a href="#heading"></a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
