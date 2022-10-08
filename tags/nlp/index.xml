@@ -15,7 +15,7 @@
         <description>&lt;p&gt;随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN,而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)-Transformer&lt;/strong&gt;。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Seq2Seq&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Seq2Seq主要由两篇论文提出：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.3215&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Sequence to Sequence Learning with Neural Networks&lt;/a&gt;、 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1406.1078&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation&lt;/a&gt;。两者差别是前者使用LSTM，后者使用GRU。&lt;/p&gt;
@@ -32,7 +32,7 @@
 &gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;注意力机制&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意力机制&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
 有两篇论文：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.0473&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1508.04025&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -50,7 +50,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;transformer-模型架构&#34;&gt;Transformer 模型架构&lt;/h2&gt;
-&lt;p&gt;Transformer 由 Encoder-Decoder 堆叠而成。其中 N 为堆叠的层数，预设值为6。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;amp;Norm、Feed Forward、Masked Multi-head Attention。
+&lt;p&gt;Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;amp;Norm、Feed Forward、Masked Multi-head Attention。
 &lt;img src=&#34;https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png&#34;
 	
 	

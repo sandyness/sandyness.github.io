@@ -311,7 +311,7 @@
     <p>随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN,而是使用叫<strong>自注意力机制(self-attention mechanism)-Transformer</strong>。其网络架构是基于 Seq2Seq + self-attention mechanism。</p>
 <ul>
 <li>
-<p>Seq2Seq</p>
+<p><strong>Seq2Seq</strong></p>
 <p>Seq2Seq主要由两篇论文提出：<a class="link" href="https://arxiv.org/abs/1409.3215"  target="_blank" rel="noopener"
     >Sequence to Sequence Learning with Neural Networks</a>、 <a class="link" href="https://arxiv.org/abs/1406.1078"  target="_blank" rel="noopener"
     >Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</a>。两者差别是前者使用LSTM，后者使用GRU。</p>
@@ -328,7 +328,7 @@
 ></p>
 </li>
 <li>
-<p>注意力机制</p>
+<p><strong>注意力机制</strong></p>
 <p>但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
 有两篇论文：<a class="link" href="https://arxiv.org/abs/1409.0473"  target="_blank" rel="noopener"
     >Neural Machine Translation by Jointly Learning to Align and Translate</a> 和 <a class="link" href="https://arxiv.org/abs/1508.04025"  target="_blank" rel="noopener"
@@ -346,7 +346,7 @@
 </li>
 </ul>
 <h2 id="transformer-模型架构">Transformer 模型架构</h2>
-<p>Transformer 由 Encoder-Decoder 堆叠而成。其中 N 为堆叠的层数，预设值为6。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;Norm、Feed Forward、Masked Multi-head Attention。
+<p>Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;Norm、Feed Forward、Masked Multi-head Attention。
 <img src="https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png"
 	
 	
@@ -628,8 +628,6 @@
 
     
 
-    
-
 
 <script>
     (function(u, c) {
@@ -649,7 +647,7 @@
             2020 - 
         
         2022 一片生菜叶
-        共码了1.4k字·共 6篇文章</br><span><p></p>
+        共码了1.5k字·共 5篇文章</br><span><p></p>
         </section>
 
     

@@ -425,7 +425,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
         <description>&lt;p&gt;随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN,而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)-Transformer&lt;/strong&gt;。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Seq2Seq&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Seq2Seq主要由两篇论文提出：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.3215&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Sequence to Sequence Learning with Neural Networks&lt;/a&gt;、 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1406.1078&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation&lt;/a&gt;。两者差别是前者使用LSTM，后者使用GRU。&lt;/p&gt;
@@ -442,7 +442,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 &gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;注意力机制&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意力机制&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
 有两篇论文：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.0473&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1508.04025&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -460,7 +460,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;transformer-模型架构&#34;&gt;Transformer 模型架构&lt;/h2&gt;
-&lt;p&gt;Transformer 由 Encoder-Decoder 堆叠而成。其中 N 为堆叠的层数，预设值为6。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;amp;Norm、Feed Forward、Masked Multi-head Attention。
+&lt;p&gt;Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;amp;Norm、Feed Forward、Masked Multi-head Attention。
 &lt;img src=&#34;https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png&#34;
 	
 	
@@ -900,20 +900,126 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 </description>
         </item>
         <item>
-        <title></title>
-        <link>https://sandyness.github.io/p/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        <title>机器学习笔记（一） - 数据预处理</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</link>
+        <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://sandyness.github.io/p/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title></title>
-        <link>https://sandyness.github.io/p/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://sandyness.github.io/p/</guid>
-        <description></description>
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</guid>
+        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和荣誉，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;结构化数据&lt;/strong&gt;：可以看作关系型数据库的一张表，每列都有清晰的定义，包含了数值型、类别型两种基本类型;每一行数据表示一个样本的信息。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;非结构化数据&lt;/strong&gt;：主要包括文本、图像、音频、视频数据， 其包含的信息无法用一个简单的数值表示，也没有清晰的类别定义，并且每条数据的大小各不相同。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数值类型&#34;&gt;数值类型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;特征归一化&lt;/strong&gt;: 为了消除数据特征之间的量纲影响，需要对特征进行归一化(Normalization)处理，将所有的特征都统一到一个大致相同的数值区间内，在随机梯度下降的过程中，
+特征的更新速度变得更为一致，容易更快地通过梯度下降找到最优解。&lt;/p&gt;
+&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;线性函数归一化(Min-Max Scaling)&lt;/strong&gt;：对原始数据进行线性变换，使结果映射到[0, 1]的范围，实现对原始数据的等比缩放。公式如下：
+X= (X - Xmax) / (Xmax - Xmin)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MinMaxScaler&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;其中X为原始数据，Xmax、Xmin分别为数据最大值和最小值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;零均值归一化(Z-Score Normalization)&lt;/strong&gt;：它会将原始数据映射到均值为 0、标准差为1的分布上。若原始特征的均值为μ、标准差为σ,归一化公式定义为：
+z = (X - μ) / σ&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;StandardScaler&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在实际应用中，通过梯度下降法求解的模型通常是需要归一化的，包括&lt;strong&gt;线性回归&lt;/strong&gt;、&lt;strong&gt;逻辑回归&lt;/strong&gt;、&lt;strong&gt;支持向量机&lt;/strong&gt;、&lt;strong&gt;神经网络&lt;/strong&gt;等模型。
+但对于&lt;strong&gt;决策树&lt;/strong&gt;模型则并不适用，决策树在进行节点分裂时主要依据数据集和特征的信息增益比，而信息增益比跟特征是否经过归一化是无关的，因为归一化并不会改变样本在特征上的信息增益。&lt;/p&gt;
+&lt;h2 id=&#34;类别类型&#34;&gt;类别类型&lt;/h2&gt;
+&lt;p&gt;类别型特征(Categorical Feature)是只在有限选项内取值的特征，如性别(男、女)、血型(A、B、 AB、O)等。&lt;/p&gt;
+&lt;p&gt;类别型特征原始输入通常是字符串形式，除了决策树等少数模型能直接处理字符串形式的输入，对于逻辑回归、支持向量机等模型来说，类别型特征必须经过处理转换成数值型特征才能正确工作。&lt;/p&gt;
+&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;序号编码（Ordinal Encoding）&lt;/strong&gt;: 常用来处理具有大小关系的类别特征（eg.成绩高中低）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OrdinalEncoder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;独热编码(One-hot Encoding）&lt;/strong&gt;：不具有大小关系的类别特征（eg.血型）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OneHotEncoder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;在独热编码下，特征向量只有某一维取值为1，其他位置取值均为0。因此可以利用向量的稀疏表示有效地节省空间，并且目前大部分的算法均接受稀疏向量形式的输入。&lt;/li&gt;
+&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常 只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编 码，节省了存储空间。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;文本&#34;&gt;文本&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Bag of words和N-gram模型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Bag of words 就是将每篇文章看成一袋子词。将整段文本以词为单位切分开， 然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。
+常用TF-IDF来计算权重，公式为TF-IDF(t,d)=TF(t,d)×IDF(t) ， 其中TF(t,d)为单词t在文档d中出现的频率，IDF(t)是逆文档频率，用来衡量单词t对表达语义所起的重要性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;word2vec&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;图片&#34;&gt;图片&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;图像数据不足带来的问题？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;图像数据不足时的处理方法？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据：
+&lt;ul&gt;
+&lt;li&gt;数据增强&lt;/li&gt;
+&lt;li&gt;GAN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;模型：
+&lt;ul&gt;
+&lt;li&gt;简化模型&lt;/li&gt;
+&lt;li&gt;添加约束项缩小假设空间（l1 or l2正则项）&lt;/li&gt;
+&lt;li&gt;集成学习&lt;/li&gt;
+&lt;li&gt;dropout超参数设置&lt;/li&gt;
+&lt;li&gt;迁移学习：fine-tune已经训练好的模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
         </item>
         
     </channel>
