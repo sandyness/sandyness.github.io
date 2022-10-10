@@ -450,7 +450,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
         <pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/transformer/</guid>
-        <description>&lt;p&gt;随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN,而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)-Transformer&lt;/strong&gt;。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
+        <description>&lt;p&gt;随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)&lt;/strong&gt;-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;&lt;/p&gt;
@@ -500,7 +500,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 	
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;encoder&#34;&gt;Encoder&lt;/h3&gt;
-&lt;h4 id=&#34;positional-encoding&#34;&gt;Positional Encoding&lt;/h4&gt;
+&lt;h4 id=&#34;positional-encoding位置编码&#34;&gt;Positional Encoding（位置编码）&lt;/h4&gt;
 &lt;p&gt;input 先经过 embedding 层转换为一个向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。&lt;/p&gt;
 &lt;p&gt;论文只用 sin, cos 函数进行位置编码，公式如下：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png&#34;
@@ -513,10 +513,10 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;其中 pos 为词语語在序列中的位置、2i, 2i+1 为詞語在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q: 为什么要使用 sin, cos 函數进行位置编码?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;sin, cos 函數可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。&lt;/p&gt;
-&lt;p&gt;此外，sin, cos 函數有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
+&lt;p&gt;其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么要使用 sin, cos 函数进行位置编码?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。&lt;/p&gt;
+&lt;p&gt;此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
 &lt;img src=&#34;https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png&#34;
 	
 	
@@ -542,10 +542,10 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;自注意机制&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;自注意力机制三个重要的參數 q, k, v。&lt;/p&gt;
-&lt;p&gt;q (query): 是指当前的词向量，用于对每个 key 做匹配程度的打分；&lt;/p&gt;
-&lt;p&gt;k (key): 是指序列中的所有词向量&lt;/p&gt;
-&lt;p&gt;v (value): 是指实际的序列內容&lt;/p&gt;
+&lt;p&gt;自注意力机制三个重要的参数 q, k, v。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;q (query)&lt;/strong&gt;: 是指当前的词向量，用于对每个 key 做匹配程度的打分；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;k (key)&lt;/strong&gt;: 是指序列中的所有词向量；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;v (value)&lt;/strong&gt;: 是指实际的序列內容。&lt;/p&gt;
 &lt;p&gt;由下图可以看到q1会对每个k做内积得到的q, k之间匹配的相似程度a1,1、a1,2&amp;hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png&#34;
 	
@@ -634,10 +634,10 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;輸入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度度 dff = 2048。&lt;/p&gt;
+&lt;p&gt;输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。&lt;/p&gt;
 &lt;h3 id=&#34;decoder&#34;&gt;Decoder&lt;/h3&gt;
 &lt;p&gt;Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
-此外， Multi-head Attention 的輸入 q 來自自身前一层的輸出，而 k, v 则是来自于 Encoder 的輸出。
+此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
 &lt;img src=&#34;https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png&#34;
 	
 	
@@ -652,7 +652,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 &lt;p&gt;Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0&lt;/p&gt;
+&lt;p&gt;Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0；&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Sequence Mask 只用于 Decoder，目的是为了防止模型看到未来的资讯，因此在超过当前时刻t的输出会加一个mask，确保模型的预测只依赖于当前时刻的输出。&lt;/p&gt;
@@ -1053,6 +1053,66 @@ z = (X - μ) / σ&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>机器学习笔记（一） - 模型评估</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
+        <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
+        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和荣誉，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
+&lt;h2 id=&#34;分类模型评估&#34;&gt;分类模型评估&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;准确率、精确率、召回率&lt;/strong&gt;:&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;F1值&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ROC曲线&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AUC曲线&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;P-R曲线&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;类别类型&#34;&gt;类别类型&lt;/h2&gt;
+&lt;p&gt;类别型特征(Categorical Feature)是只在有限选项内取值的特征，如性别(男、女)、血型(A、B、 AB、O)等。&lt;/p&gt;
+&lt;p&gt;类别型特征原始输入通常是字符串形式，除了决策树等少数模型能直接处理字符串形式的输入，对于逻辑回归、支持向量机等模型来说，类别型特征必须经过处理转换成数值型特征才能正确工作。&lt;/p&gt;
+&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;序号编码（Ordinal Encoding）&lt;/strong&gt;: 常用来处理具有大小关系的类别特征（eg.成绩高中低）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OrdinalEncoder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;独热编码(One-hot Encoding）&lt;/strong&gt;：不具有大小关系的类别特征（eg.血型）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OneHotEncoder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;在独热编码下，特征向量只有某一维取值为1，其他位置取值均为0。因此可以利用向量的稀疏表示有效地节省空间，并且目前大部分的算法均接受稀疏向量形式的输入。&lt;/li&gt;
+&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常 只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编 码，节省了存储空间。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;文本&#34;&gt;文本&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Bag of words和N-gram模型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Bag of words 就是将每篇文章看成一袋子词。将整段文本以词为单位切分开， 然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。
+常用T&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 </description>

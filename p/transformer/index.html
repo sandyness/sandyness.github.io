@@ -308,7 +308,7 @@
     <section class="article-content">
     
     
-    <p>随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN,而是使用叫<strong>自注意力机制(self-attention mechanism)-Transformer</strong>。其网络架构是基于 Seq2Seq + self-attention mechanism。</p>
+    <p>随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫<strong>自注意力机制(self-attention mechanism)</strong>-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。</p>
 <ul>
 <li>
 <p><strong>Seq2Seq</strong></p>
@@ -358,7 +358,7 @@
 	
 ></p>
 <h3 id="encoder">Encoder</h3>
-<h4 id="positional-encoding">Positional Encoding</h4>
+<h4 id="positional-encoding位置编码">Positional Encoding（位置编码）</h4>
 <p>input 先经过 embedding 层转换为一个向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。</p>
 <p>论文只用 sin, cos 函数进行位置编码，公式如下：</p>
 <p><img src="https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png"
@@ -371,10 +371,10 @@
 	
 	
 ></p>
-<p>其中 pos 为词语語在序列中的位置、2i, 2i+1 为詞語在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。</p>
-<p><strong>Q: 为什么要使用 sin, cos 函數进行位置编码?</strong></p>
-<p>sin, cos 函數可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。</p>
-<p>此外，sin, cos 函數有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
+<p>其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。</p>
+<p><strong>Q: 为什么要使用 sin, cos 函数进行位置编码?</strong></p>
+<p>sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。</p>
+<p>此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
 <img src="https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png"
 	
 	
@@ -400,10 +400,10 @@
 <ul>
 <li>
 <p><strong>自注意机制</strong></p>
-<p>自注意力机制三个重要的參數 q, k, v。</p>
-<p>q (query): 是指当前的词向量，用于对每个 key 做匹配程度的打分；</p>
-<p>k (key): 是指序列中的所有词向量</p>
-<p>v (value): 是指实际的序列內容</p>
+<p>自注意力机制三个重要的参数 q, k, v。</p>
+<p><strong>q (query)</strong>: 是指当前的词向量，用于对每个 key 做匹配程度的打分；</p>
+<p><strong>k (key)</strong>: 是指序列中的所有词向量；</p>
+<p><strong>v (value)</strong>: 是指实际的序列內容。</p>
 <p>由下图可以看到q1会对每个k做内积得到的q, k之间匹配的相似程度a1,1、a1,2&hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。</p>
 <p><img src="https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png"
 	
@@ -492,10 +492,10 @@
 	
 	
 ></p>
-<p>輸入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度度 dff = 2048。</p>
+<p>输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。</p>
 <h3 id="decoder">Decoder</h3>
 <p>Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
-此外， Multi-head Attention 的輸入 q 來自自身前一层的輸出，而 k, v 则是来自于 Encoder 的輸出。
+此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
 <img src="https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png"
 	
 	
@@ -510,7 +510,7 @@
 <p>Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask</p>
 <ul>
 <li>
-<p>Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0</p>
+<p>Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0；</p>
 </li>
 <li>
 <p>Sequence Mask 只用于 Decoder，目的是为了防止模型看到未来的资讯，因此在超过当前时刻t的输出会加一个mask，确保模型的预测只依赖于当前时刻的输出。</p>
@@ -628,6 +628,8 @@
 
     
 
+    
+
 
 <script>
     (function(u, c) {
@@ -647,7 +649,7 @@
             2020 - 
         
         2022 一片生菜叶
-        共码了1.5k字·共 5篇文章</br><span><p></p>
+        共码了1.5k字·共 6篇文章</br><span><p></p>
         </section>
 
     
@@ -777,7 +779,7 @@ document.getElementById('days').innerHTML = number_of_days;
       <ol>
         <li><a href="#encoder">Encoder</a>
           <ol>
-            <li><a href="#positional-encoding">Positional Encoding</a></li>
+            <li><a href="#positional-encoding位置编码">Positional Encoding（位置编码）</a></li>
             <li><a href="#多头注意力机制">多头注意力机制</a></li>
             <li><a href="#add--norm">Add &amp; Norm</a></li>
             <li><a href="#feed-forward-networks-fnn">Feed-Forward Networks (FNN)</a></li>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>模型评估 on 一片生菜叶</title>
+        <link>https://sandyness.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
+        <description>Recent content in 模型评估 on 一片生菜叶</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>机器学习笔记（一） - 模型评估</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
+        <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
+        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和荣誉，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
+&lt;h2 id=&#34;分类模型评估&#34;&gt;分类模型评估&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;准确率、精确率、召回率&lt;/strong&gt;:&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;F1值&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ROC曲线&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AUC曲线&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;P-R曲线&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;类别类型&#34;&gt;类别类型&lt;/h2&gt;
+&lt;p&gt;类别型特征(Categorical Feature)是只在有限选项内取值的特征，如性别(男、女)、血型(A、B、 AB、O)等。&lt;/p&gt;
+&lt;p&gt;类别型特征原始输入通常是字符串形式，除了决策树等少数模型能直接处理字符串形式的输入，对于逻辑回归、支持向量机等模型来说，类别型特征必须经过处理转换成数值型特征才能正确工作。&lt;/p&gt;
+&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;序号编码（Ordinal Encoding）&lt;/strong&gt;: 常用来处理具有大小关系的类别特征（eg.成绩高中低）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OrdinalEncoder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;独热编码(One-hot Encoding）&lt;/strong&gt;：不具有大小关系的类别特征（eg.血型）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OneHotEncoder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;在独热编码下，特征向量只有某一维取值为1，其他位置取值均为0。因此可以利用向量的稀疏表示有效地节省空间，并且目前大部分的算法均接受稀疏向量形式的输入。&lt;/li&gt;
+&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常 只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编 码，节省了存储空间。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;文本&#34;&gt;文本&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Bag of words和N-gram模型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Bag of words 就是将每篇文章看成一袋子词。将整段文本以词为单位切分开， 然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。
+常用T&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
