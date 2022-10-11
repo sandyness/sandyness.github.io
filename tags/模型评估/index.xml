@@ -6,62 +6,120 @@
         <description>Recent content in 模型评估 on 一片生菜叶</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>机器学习笔记（一） - 模型评估</title>
-        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
-        <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+        <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>机器学习笔记（二）- 模型评估和超参数优化</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E5%92%8C%E8%B6%85%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96/</link>
+        <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
-        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和荣誉，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
-&lt;h2 id=&#34;分类模型评估&#34;&gt;分类模型评估&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;准确率、精确率、召回率&lt;/strong&gt;:&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;F1值&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ROC曲线&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;AUC曲线&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;P-R曲线&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;类别类型&#34;&gt;类别类型&lt;/h2&gt;
-&lt;p&gt;类别型特征(Categorical Feature)是只在有限选项内取值的特征，如性别(男、女)、血型(A、B、 AB、O)等。&lt;/p&gt;
-&lt;p&gt;类别型特征原始输入通常是字符串形式，除了决策树等少数模型能直接处理字符串形式的输入，对于逻辑回归、支持向量机等模型来说，类别型特征必须经过处理转换成数值型特征才能正确工作。&lt;/p&gt;
-&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E5%92%8C%E8%B6%85%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96/</guid>
+        <description>&lt;h2 id=&#34;模型性能评估&#34;&gt;模型性能评估&lt;/h2&gt;
+&lt;p&gt;对模型的泛化性能进⾏评估，不仅需要有效可⾏的实验评估⽅法，还需要有衡量模型泛化能⼒的评价标准，也就是性
+能度量（performance measure）。性能度量反映了任务需求，在对⽐不同模型的能⼒时，使⽤不同的性能度量往往会导
+致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型时好的，不仅仅取决于算法和数据，还决定于任务需求。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;序号编码（Ordinal Encoding）&lt;/strong&gt;: 常用来处理具有大小关系的类别特征（eg.成绩高中低）&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OrdinalEncoder&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;独热编码(One-hot Encoding）&lt;/strong&gt;：不具有大小关系的类别特征（eg.血型）&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OneHotEncoder&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;在独热编码下，特征向量只有某一维取值为1，其他位置取值均为0。因此可以利用向量的稀疏表示有效地节省空间，并且目前大部分的算法均接受稀疏向量形式的输入。&lt;/li&gt;
-&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常 只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
+&lt;p&gt;&lt;strong&gt;回归问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平均绝对误差（mean absolute error, MAE）&lt;/li&gt;
+&lt;li&gt;平均绝对百分⽐误差（mean absolute percentage error, MAPE）&lt;/li&gt;
+&lt;li&gt;均⽅误差（mean squared error, MSE）&lt;/li&gt;
+&lt;li&gt;均⽅根误差（root-mean-square error, RMSE）&lt;/li&gt;
+&lt;li&gt;误差标准差&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编 码，节省了存储空间。&lt;/p&gt;
-&lt;/li&gt;
+&lt;p&gt;&lt;strong&gt;分类问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;误差和精度&lt;/li&gt;
+&lt;li&gt;准确率，召回率和 F1 Score&lt;/li&gt;
+&lt;li&gt;ROC 和 AUC&lt;/li&gt;
+&lt;li&gt;多分类 Log Loss&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;文本&#34;&gt;文本&lt;/h2&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;聚类问题&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Bag of words和N-gram模型&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Bag of words 就是将每篇文章看成一袋子词。将整段文本以词为单位切分开， 然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。
-常用T&lt;/p&gt;
+&lt;p&gt;外部指标&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Jaccard 系数（Jaccard Coefficient，JC）&lt;/li&gt;
+&lt;li&gt;FM 指数（Fowlkes and Mallows Index，FMI）&lt;/li&gt;
+&lt;li&gt;Rand 指数（Rand Index，RI）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;内部指标：考虑聚类结果的簇划分 ，定义：C = {C1,C2,&amp;hellip;,Ck}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;簇C内样本间的平均距离&lt;/li&gt;
+&lt;li&gt;簇C内样本间最远距离&lt;/li&gt;
+&lt;li&gt;簇Ci与Cj最近样本件的距离&lt;/li&gt;
+&lt;li&gt;簇Ci与Cj中⼼点间的距离&lt;/li&gt;
+&lt;li&gt;DB 指数（Davies-Bouldin Index，DBI）类⽐簇间相似度&lt;/li&gt;
+&lt;li&gt;Dunn 指数（Dunn Index，DI）类⽐簇内相似度
+DBI 的值越小越好，DI 相反，越⼤越好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;模型生成和选择&#34;&gt;模型生成和选择&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;过拟合问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L1正则化&lt;/li&gt;
+&lt;li&gt;L2正则化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;评估方法&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;留出法&lt;/li&gt;
+&lt;li&gt;交叉验证&lt;/li&gt;
+&lt;li&gt;⾃助法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;偏差和方差&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;泛化误差可以分解为偏差、⽅差与噪声之和。&lt;/p&gt;
+&lt;p&gt;偏差：度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本⾝的拟合能⼒。&lt;/p&gt;
+&lt;p&gt;⽅差：度量了同样⼤小的训练集的变动所导致的学习性能的变化，即刻画了数据扰动所造成的影响。&lt;/p&gt;
+&lt;p&gt;噪声：则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题本⾝的难度。&lt;/p&gt;
+&lt;p&gt;偏差-⽅差分解说明，泛化性能是由学习算法的能⼒、数据的充分性以及学习任务本⾝的难度所共同决定的。给定学习任务，为了取得好的泛化性能，需要使偏差较小，即能够充分拟合数据，且使⽅差较小，即使数据扰动产⽣的影响较小。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;超参数优化&#34;&gt;超参数优化&lt;/h2&gt;
+&lt;p&gt;模型的参数和超参数⼆者有着本质上的区别：模型参数是模型内部的配置变量，可以⽤数据估计模型参数的值，例如：
+回归中的权重，决策树分类点的阈值等；模型超参数是模型外部的配置，必须⼿动设置参数的值，例如：随机森林树的
+个数，聚类⽅法⾥⾯类的个数，或者主题模型⾥⾯主题的个数等。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;搜索算法&lt;/strong&gt;: ⽹格搜索，随机搜索等&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Grid Search 是⼀个暴⼒解法，通过所有需要测试的超参数，找出所有可能的超参数组合，最根据验证集的损失找出最好的⼀组超参数。这是⼀个⾮常消耗资源的⽅
+法。如果有个超参数，每个超参数选最多个可能值，那么该算法的时间复杂度是 。&lt;/li&gt;
+&lt;li&gt;Random Search 的使⽤⽅法 Grid Search 基本⼀致，区别在于 Random Search 会在超参数的组合空间内随机采样搜索，其搜索能⼒取决于设定的抽样次数，最重要的是收敛更快。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;启发式算法&lt;/strong&gt;: 遗传算法，粒⼦群算法等&lt;/p&gt;
+&lt;p&gt;启发式算法（Heuristic Algorithms）是相对于最优算法提出的。
+⼀个问题的最优算法是指求得该问题每个实例的最优解。
+启发式算法可以这样定义：⼀个基于直观或经验构造的算法，在可接受的花费（指计算时间、占⽤空间等）下给出待解决组合优化问题每⼀个实例的⼀个可⾏解，该可⾏解与最优解的偏离程度不⼀定事先可以预计。
+在某些情况下，特别是实际问题中，最优算法的计算时间使⼈⽆法忍受或因问题的难度使其计算时间随问题规模的增加以指数速度增加，此时只能通过启发式算法求得问题的⼀个可⾏解。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;贝叶斯优化&lt;/strong&gt;: ⾼斯过程，TPE 等&lt;/p&gt;
+&lt;p&gt;Grid Search 和 Randomized Search 可以让整个调参过程⾃动化，但它们⽆法从之前的调参结果中获取信息，可能会尝试很多⽆效的参数空间。
+而⻉叶斯优化，会对上⼀次的评估结果进⾏追踪，建⽴⼀个概率模型，反应超参数在⽬标函数上表现的概率分布⽤于指导下⼀次的参数选择。
+⻉叶斯优化适⽤于随机、⾮凸、不连续⽅程的优化。Sequential Model-Based Optimization (SMBO) 是⻉叶斯优化更具体的表现形式，⼀般会有以下⼏个过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;给定要搜索的超参数空间&lt;/li&gt;
+&lt;li&gt;定义⼀个⽬标函数⽤于评估优化&lt;/li&gt;
+&lt;li&gt;建⽴⽬标函数的 Surrogate Model&lt;/li&gt;
+&lt;li&gt;建⽴⼀个选择超参数的标准的评估 Surrogate Model&lt;/li&gt;
+&lt;li&gt;获取评分和超参数的样本⽤于更新 Surrogate Model&lt;/li&gt;
+&lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 </description>

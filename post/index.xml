@@ -6,10 +6,237 @@
         <description>Recent content in Posts on 一片生菜叶</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 08 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 07 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Transformer</title>
+        <link>https://sandyness.github.io/p/transformer/</link>
+        <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/transformer/</guid>
+        <description>&lt;p&gt;随着深度学习的发展 ，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)&lt;/strong&gt;-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;：主要由两篇论文提出：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.3215&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Sequence to Sequence Learning with Neural Networks&lt;/a&gt;和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1406.1078&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation&lt;/a&gt;。两者差别是前者使用LSTM，后者使用GRU。&lt;/p&gt;
+&lt;p&gt;如下图所示，其架构为 Encoder-Decoder，Encoder 先将输入句子进行编码，得到的状态传给 Decoder 解码生成目标句子。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*2OxcYXDYMIjCTEomCymawQ.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意力机制&lt;/strong&gt;：但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
+有两篇论文：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.0473&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1508.04025&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Effective Approaches to Attention-based Neural Machine Translation&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/720/1*Wo4GvE-e26oURzwbu2p4RQ.gif&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;transformer-模型架构&#34;&gt;Transformer 模型架构&lt;/h2&gt;
+&lt;p&gt;Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add &amp;amp; Norm、Feed Forward、Masked Multi-head Attention。
+&lt;img src=&#34;https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;encoder编码器&#34;&gt;Encoder（编码器）&lt;/h2&gt;
+&lt;h3 id=&#34;positional-encoding位置编码&#34;&gt;Positional Encoding（位置编码）&lt;/h3&gt;
+&lt;p&gt;input 先经过 embedding 层转换为向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。&lt;/p&gt;
+&lt;p&gt;论文使用 sin, cos 函数进行位置编码，公式如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么要使用 sin, cos 函数进行位置编码?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。
+此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;multi-head-attention多头注意力机制&#34;&gt;Multi-head Attention（多头注意力机制）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;self attention(自注意机制)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自注意力机制三个重要的参数 q, k, v。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;q (query)&lt;/strong&gt;: 是指当前的词向量，用于对每个 key 做匹配程度的打分；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;k (key)&lt;/strong&gt;: 是指序列中的所有词向量；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;v (value)&lt;/strong&gt;: 是指实际的序列內容。&lt;/p&gt;
+&lt;p&gt;由下图可以看到 q1 会对每个 k 做内积得到的 q , k 之间匹配的相似程度a1,1、a1,2&amp;hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Scaled Dot-Product Attention&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;由下列公式得知 q,  会先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 后，再做 softmax 计算出 v 的权重，
+最后与 v 做加权运算，其中 q, k 维度都为 dk，v 维度为 dv。除以 sqrt(dk)是为了避免当 dk (q, k 的维度) 太大时，q, k 的内积（Inner Product）的值过大，softmax 计算的值落入饱和区而导致梯度不稳定。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*MoYd4F8qVq28GaQMgK3VcA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*RTI9ISmPxNxQ1sPhasweVg.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;多头注意力&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在 CN N中可以输出多个通道。在transformer中，为了模拟CNN能够输出多个通道的效果，提出了多头注意力机制（Multi-head Attention）。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*bX4xWGLlidqJmEgW6SO3cA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Input Embedding 和 Positional Encoding 相加后进入到 layer 里。Encoder 有 Multi-head Attention 和 Feed Forward 这两个子层。&lt;/p&gt;
+&lt;p&gt;其运算方式与 self-attention mechanism 相同。区别是先将q,k,v拆分成多个低维度的向量。&lt;/p&gt;
+&lt;p&gt;若假设head=2,qi会拆分为qi,1、qi,2。最后再把这些head输出concat起来做一次线性运算。这样的好处是能够让各个head(q,k,v)关注不同的资讯，有些关注局部资讯，有些关注全局资讯。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/720/1*e7Vk-1dOYydqmaQm5lNhpQ.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;由下图可以看到q,k,v会做h次的线性映射到低维度的向量，再进行 Scaled Dot-Product Attention，最后将其concat、linear 得到输出。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*JTNvv3EaZsbfDDlys5MYkg.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;add--norm&#34;&gt;Add &amp;amp; Norm&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: batch normalization 和 layer normalization 的区别?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;batch normalization 是将每个batch（批量）的特征向量（列）做 normalization，而layer normalization是将每个样本（行）做 normalization。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么用 layer normalization 而不用 batch normalization?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在时序的序列里，每个样本的长度可能是不一样的。若用batch normalization对特征向量做均值和方差的计算，会导致结果不稳定。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;经过 Multi-head Attention 后进入 Add &amp;amp; Norm 层，这一层是指 residual connection 和 layer normalization。前一层的输出 Sublayer 与输入 x 相加 (residual connection)，减缓梯度消失的问题，然后再做 layer normalization。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*pTvOxquqbWusuu56UvHUhA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;feed-forward-networks-前馈全连接层&#34;&gt;Feed-Forward Networks (前馈全连接层)&lt;/h3&gt;
+&lt;p&gt;公式如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/720/1*ydsShg3kOfXS_--EyYHI-g.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。&lt;/p&gt;
+&lt;h2 id=&#34;decoder解码器&#34;&gt;Decoder(解码器)&lt;/h2&gt;
+&lt;p&gt;Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
+此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
+&lt;img src=&#34;https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;masked-multi-head-attention掩码多头机制&#34;&gt;Masked Multi-head Attention（掩码多头机制）&lt;/h3&gt;
+&lt;p&gt;Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Sequence Mask 只用于 Decoder，目的是为了防止模型看到未来的资讯，因此在超过当前时刻t的输出会加一个mask，确保模型的预测只依赖于当前时刻的输出。&lt;/p&gt;
+&lt;p&gt;Sequence Mask 的做法是通过一个上三角矩阵，将这些区域的值都设为负无穷，这样这些元素经过softmax后都会变为0达到掩码的效果。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考链接&#34;&gt;参考链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1706.03762&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;论文链接&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1pu411o7BE/?spm_id_from=333.788&amp;amp;vd_source=36661e71647573f262b7df0a70ec51c4&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李沐老师的Transformer【论文精读】&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>CNN｜ResNet</title>
         <link>https://sandyness.github.io/p/cnnresnet/</link>
-        <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/cnnresnet/</guid>
         <description>&lt;p&gt;本文介绍CNN的经典模型ResNet。ResNet在2015年微软亚洲院的何凯明博士提出，并在同年的ImageNet LSVRC竞赛中获得了冠军，同时也在ImageNet detection、
@@ -417,233 +644,9 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 </description>
         </item>
         <item>
-        <title>Transformer</title>
-        <link>https://sandyness.github.io/p/transformer/</link>
-        <pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate>
-        
-        <guid>https://sandyness.github.io/p/transformer/</guid>
-        <description>&lt;p&gt;随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)&lt;/strong&gt;-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Seq2Seq主要由两篇论文提出：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.3215&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Sequence to Sequence Learning with Neural Networks&lt;/a&gt;、 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1406.1078&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation&lt;/a&gt;。两者差别是前者使用LSTM，后者使用GRU。&lt;/p&gt;
-&lt;p&gt;如下图所示，其架构为 Encoder-Decoder，Encoder 先将输入句子进行编码，得到的状态传给 Decoder 解码生成目标句子。
-&lt;img src=&#34;https://miro.medium.com/max/786/1*2OxcYXDYMIjCTEomCymawQ.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;注意力机制&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
-有两篇论文：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.0473&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1508.04025&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Effective Approaches to Attention-based Neural Machine Translation&lt;/a&gt;。
-&lt;img src=&#34;https://miro.medium.com/max/720/1*Wo4GvE-e26oURzwbu2p4RQ.gif&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;transformer-模型架构&#34;&gt;Transformer 模型架构&lt;/h2&gt;
-&lt;p&gt;Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;amp;Norm、Feed Forward、Masked Multi-head Attention。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h3 id=&#34;encoder&#34;&gt;Encoder&lt;/h3&gt;
-&lt;h4 id=&#34;positional-encoding位置编码&#34;&gt;Positional Encoding（位置编码）&lt;/h4&gt;
-&lt;p&gt;input 先经过 embedding 层转换为一个向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。&lt;/p&gt;
-&lt;p&gt;论文只用 sin, cos 函数进行位置编码，公式如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q: 为什么要使用 sin, cos 函数进行位置编码?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。&lt;/p&gt;
-&lt;p&gt;此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;多头注意力机制&#34;&gt;多头注意力机制&lt;/h4&gt;
-&lt;p&gt;Input Embedding 和 Positional Encoding 相加后进入到 layer 里。Encoder 有 Multi-head Attention 和 Feed Forward 这两个子层。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*bX4xWGLlidqJmEgW6SO3cA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;自注意机制&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;自注意力机制三个重要的参数 q, k, v。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;q (query)&lt;/strong&gt;: 是指当前的词向量，用于对每个 key 做匹配程度的打分；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;k (key)&lt;/strong&gt;: 是指序列中的所有词向量；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;v (value)&lt;/strong&gt;: 是指实际的序列內容。&lt;/p&gt;
-&lt;p&gt;由下图可以看到q1会对每个k做内积得到的q, k之间匹配的相似程度a1,1、a1,2&amp;hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Scaled Dot-Product Attention&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;由下列公式得知 q, k 会先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 后，再做 softmax 计算出 v 的权重，
-最后与 v 做加权运算，其中 q, k 维度都为 dk，v 维度wei  dv。除以 sqrt(dk)是为了避免当 dk (q, k 的维度) 太大时，q, k Inner Product 的值过大，softmax 计算的值落入饱和区而导致梯度不稳定。
-&lt;img src=&#34;https://miro.medium.com/max/786/1*MoYd4F8qVq28GaQMgK3VcA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;
-&lt;img src=&#34;https://miro.medium.com/max/640/1*RTI9ISmPxNxQ1sPhasweVg.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;多头注意力&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;其运算方式与 self-attention mechanism 相同。区别是先将q,k,v拆分成多个低维度的向量。若假设head=2,qi会拆分为qi,1、qi,2。最后再把这些head输出concat起来做一次线性运算。&lt;/p&gt;
-&lt;p&gt;这样的好处是能够让各个head(q,k,v)关注不同的资讯，有些关注local，有些关注global资讯。
-&lt;img src=&#34;https://miro.medium.com/max/720/1*e7Vk-1dOYydqmaQm5lNhpQ.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;由下图可以看到q,k,v会做h次的线性映射到低维度的向量，再进行 Scaled Dot-Product Attention，最后将其concat、linear 得到输出。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*JTNvv3EaZsbfDDlys5MYkg.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;add--norm&#34;&gt;Add &amp;amp; Norm&lt;/h4&gt;
-&lt;p&gt;经过 Multi-head Attention 后进入 Add &amp;amp; Norm 层，这一层是指 residual connection 和 layer normalization。前一层的输出 Sublayer 与输入 x 相加 (residual connection)，减缓梯度消失的问题，然后再做 layer normalization。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*pTvOxquqbWusuu56UvHUhA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;feed-forward-networks-fnn&#34;&gt;Feed-Forward Networks (FNN)&lt;/h4&gt;
-&lt;p&gt;公式如下：
-&lt;img src=&#34;https://miro.medium.com/max/720/1*ydsShg3kOfXS_--EyYHI-g.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。&lt;/p&gt;
-&lt;h3 id=&#34;decoder&#34;&gt;Decoder&lt;/h3&gt;
-&lt;p&gt;Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
-此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;masked-multi-head-attention&#34;&gt;Masked Multi-head Attention&lt;/h4&gt;
-&lt;p&gt;Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0；&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Sequence Mask 只用于 Decoder，目的是为了防止模型看到未来的资讯，因此在超过当前时刻t的输出会加一个mask，确保模型的预测只依赖于当前时刻的输出。&lt;/p&gt;
-&lt;p&gt;Sequence Mask 的做法是通过一个上三角矩阵，将这些区域的值都设为负无穷，这样这些元素经过softmax后都会变为0达到掩码的效果。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;参考链接&#34;&gt;参考链接&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1706.03762&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;论文链接&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1pu411o7BE/?spm_id_from=333.788&amp;amp;vd_source=36661e71647573f262b7df0a70ec51c4&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;李沐老师的Transformer【论文精读】&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        <item>
         <title>CNN｜AlexNet</title>
         <link>https://sandyness.github.io/p/cnnalexnet/</link>
-        <pubDate>Wed, 05 May 2021 00:00:00 +0000</pubDate>
+        <pubDate>Tue, 05 May 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/cnnalexnet/</guid>
         <description>&lt;p&gt;AlexNet 是 Alex Krizhevsky 于2012提出的。并在同年的 ImageNet LSVRC 竞赛中获得了冠军。AlexNet 架构有8层，其中5个卷积层、3个全连接层。&lt;/p&gt;
@@ -763,7 +766,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
         <item>
         <title>效率｜如何学习</title>
         <link>https://sandyness.github.io/p/%E6%95%88%E7%8E%87%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0/</link>
-        <pubDate>Fri, 02 Apr 2021 00:00:00 +0000</pubDate>
+        <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/%E6%95%88%E7%8E%87%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0/</guid>
         <description>&lt;h2 id=&#34;什么是学习为什么学习&#34;&gt;什么是学习？为什么学习？&lt;/h2&gt;
@@ -900,22 +903,219 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 </description>
         </item>
         <item>
-        <title>机器学习笔记（一） - 数据预处理</title>
-        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</link>
+        <title>机器学习笔记（二）- 模型评估和超参数优化</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E5%92%8C%E8%B6%85%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96/</link>
+        <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E5%92%8C%E8%B6%85%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96/</guid>
+        <description>&lt;h2 id=&#34;模型性能评估&#34;&gt;模型性能评估&lt;/h2&gt;
+&lt;p&gt;对模型的泛化性能进⾏评估，不仅需要有效可⾏的实验评估⽅法，还需要有衡量模型泛化能⼒的评价标准，也就是性
+能度量（performance measure）。性能度量反映了任务需求，在对⽐不同模型的能⼒时，使⽤不同的性能度量往往会导
+致不同的评判结果，这意味着模型的“好坏”是相对的，什么样的模型时好的，不仅仅取决于算法和数据，还决定于任务需求。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;回归问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平均绝对误差（mean absolute error, MAE）&lt;/li&gt;
+&lt;li&gt;平均绝对百分⽐误差（mean absolute percentage error, MAPE）&lt;/li&gt;
+&lt;li&gt;均⽅误差（mean squared error, MSE）&lt;/li&gt;
+&lt;li&gt;均⽅根误差（root-mean-square error, RMSE）&lt;/li&gt;
+&lt;li&gt;误差标准差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;分类问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;误差和精度&lt;/li&gt;
+&lt;li&gt;准确率，召回率和 F1 Score&lt;/li&gt;
+&lt;li&gt;ROC 和 AUC&lt;/li&gt;
+&lt;li&gt;多分类 Log Loss&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;聚类问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;外部指标&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Jaccard 系数（Jaccard Coefficient，JC）&lt;/li&gt;
+&lt;li&gt;FM 指数（Fowlkes and Mallows Index，FMI）&lt;/li&gt;
+&lt;li&gt;Rand 指数（Rand Index，RI）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;内部指标：考虑聚类结果的簇划分 ，定义：C = {C1,C2,&amp;hellip;,Ck}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;簇C内样本间的平均距离&lt;/li&gt;
+&lt;li&gt;簇C内样本间最远距离&lt;/li&gt;
+&lt;li&gt;簇Ci与Cj最近样本件的距离&lt;/li&gt;
+&lt;li&gt;簇Ci与Cj中⼼点间的距离&lt;/li&gt;
+&lt;li&gt;DB 指数（Davies-Bouldin Index，DBI）类⽐簇间相似度&lt;/li&gt;
+&lt;li&gt;Dunn 指数（Dunn Index，DI）类⽐簇内相似度
+DBI 的值越小越好，DI 相反，越⼤越好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;模型生成和选择&#34;&gt;模型生成和选择&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;过拟合问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L1正则化&lt;/li&gt;
+&lt;li&gt;L2正则化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;评估方法&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;留出法&lt;/li&gt;
+&lt;li&gt;交叉验证&lt;/li&gt;
+&lt;li&gt;⾃助法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;偏差和方差&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;泛化误差可以分解为偏差、⽅差与噪声之和。&lt;/p&gt;
+&lt;p&gt;偏差：度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本⾝的拟合能⼒。&lt;/p&gt;
+&lt;p&gt;⽅差：度量了同样⼤小的训练集的变动所导致的学习性能的变化，即刻画了数据扰动所造成的影响。&lt;/p&gt;
+&lt;p&gt;噪声：则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题本⾝的难度。&lt;/p&gt;
+&lt;p&gt;偏差-⽅差分解说明，泛化性能是由学习算法的能⼒、数据的充分性以及学习任务本⾝的难度所共同决定的。给定学习任务，为了取得好的泛化性能，需要使偏差较小，即能够充分拟合数据，且使⽅差较小，即使数据扰动产⽣的影响较小。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;超参数优化&#34;&gt;超参数优化&lt;/h2&gt;
+&lt;p&gt;模型的参数和超参数⼆者有着本质上的区别：模型参数是模型内部的配置变量，可以⽤数据估计模型参数的值，例如：
+回归中的权重，决策树分类点的阈值等；模型超参数是模型外部的配置，必须⼿动设置参数的值，例如：随机森林树的
+个数，聚类⽅法⾥⾯类的个数，或者主题模型⾥⾯主题的个数等。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;搜索算法&lt;/strong&gt;: ⽹格搜索，随机搜索等&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Grid Search 是⼀个暴⼒解法，通过所有需要测试的超参数，找出所有可能的超参数组合，最根据验证集的损失找出最好的⼀组超参数。这是⼀个⾮常消耗资源的⽅
+法。如果有个超参数，每个超参数选最多个可能值，那么该算法的时间复杂度是 。&lt;/li&gt;
+&lt;li&gt;Random Search 的使⽤⽅法 Grid Search 基本⼀致，区别在于 Random Search 会在超参数的组合空间内随机采样搜索，其搜索能⼒取决于设定的抽样次数，最重要的是收敛更快。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;启发式算法&lt;/strong&gt;: 遗传算法，粒⼦群算法等&lt;/p&gt;
+&lt;p&gt;启发式算法（Heuristic Algorithms）是相对于最优算法提出的。
+⼀个问题的最优算法是指求得该问题每个实例的最优解。
+启发式算法可以这样定义：⼀个基于直观或经验构造的算法，在可接受的花费（指计算时间、占⽤空间等）下给出待解决组合优化问题每⼀个实例的⼀个可⾏解，该可⾏解与最优解的偏离程度不⼀定事先可以预计。
+在某些情况下，特别是实际问题中，最优算法的计算时间使⼈⽆法忍受或因问题的难度使其计算时间随问题规模的增加以指数速度增加，此时只能通过启发式算法求得问题的⼀个可⾏解。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;贝叶斯优化&lt;/strong&gt;: ⾼斯过程，TPE 等&lt;/p&gt;
+&lt;p&gt;Grid Search 和 Randomized Search 可以让整个调参过程⾃动化，但它们⽆法从之前的调参结果中获取信息，可能会尝试很多⽆效的参数空间。
+而⻉叶斯优化，会对上⼀次的评估结果进⾏追踪，建⽴⼀个概率模型，反应超参数在⽬标函数上表现的概率分布⽤于指导下⼀次的参数选择。
+⻉叶斯优化适⽤于随机、⾮凸、不连续⽅程的优化。Sequential Model-Based Optimization (SMBO) 是⻉叶斯优化更具体的表现形式，⼀般会有以下⼏个过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;给定要搜索的超参数空间&lt;/li&gt;
+&lt;li&gt;定义⼀个⽬标函数⽤于评估优化&lt;/li&gt;
+&lt;li&gt;建⽴⽬标函数的 Surrogate Model&lt;/li&gt;
+&lt;li&gt;建⽴⼀个选择超参数的标准的评估 Surrogate Model&lt;/li&gt;
+&lt;li&gt;获取评分和超参数的样本⽤于更新 Surrogate Model&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>机器学习笔记(一) - 特征工程</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</link>
         <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</guid>
-        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和荣誉，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</guid>
+        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和冗余，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;结构化数据&lt;/strong&gt;：可以看作关系型数据库的一张表，每列都有清晰的定义，包含了数值型、类别型两种基本类型;每一行数据表示一个样本的信息。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;非结构化数据&lt;/strong&gt;：主要包括文本、图像、音频、视频数据， 其包含的信息无法用一个简单的数值表示，也没有清晰的类别定义，并且每条数据的大小各不相同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;非结构化数据&lt;/strong&gt;：主要包括文本、图像、音频、视频数据，其包含的信息无法用一个简单的数值表示，也没有清晰的类别定义，并且每条数据的大小各不相同。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;数值类型&#34;&gt;数值类型&lt;/h2&gt;
+&lt;h2 id=&#34;数据预处理&#34;&gt;数据预处理&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;处理缺失数据&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;删除缺失值：pandas 中使用 dropna()函数&lt;/li&gt;
+&lt;li&gt;补全缺失值
+&lt;ul&gt;
+&lt;li&gt;pandas 中使用 fillna()函数&lt;/li&gt;
+&lt;li&gt;单变量补全
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.impute&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SimpleImputer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;多变量补全
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.impute&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IterativeImputer&lt;/span&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;KNN补全
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.impute&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KNNImputer&lt;/span&gt;       
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;删除重复数据&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;特征去重: 对于仅相差常数倍的特征需要进⾏去重处理&lt;/li&gt;
+&lt;li&gt;常量特征剔除: 对于常量或⽅差近似为零的特征，其对于样本之间的区分度贡献为零或近似为零&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;异常值检测&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;异常值&lt;/strong&gt;：是指样本中存在的同样本整体差异较⼤的数据，异常数据可以划分为两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;异常值不属于该总体，而是从另⼀个总体错误抽样到样本中而导致的较⼤差异。&lt;/li&gt;
+&lt;li&gt;异常值属于该总体，是由于总体所固有的变异性而导致的较⼤差异。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于数值型的单变量，可以利⽤拉依达准则对其异常值进⾏检测。
+假设总体 x 服从正态分布，则： P (|x − μ| &amp;gt; 3σ) ≤ 0.003 其中 μ 表⽰总体的期望，
+σ 表⽰总体的标准差。因此，对于样本中出现⼤于 μ + 3σ 或小于 μ − 3σ 的数据的概率是⾮常小的，从而可以对⼤于 μ + 3σ 和小于 μ − 3σ 的数据予以剔除。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;异常检测（Anomaly Detection)&lt;/strong&gt; ：是指对不符合预期模式或数据集中异常项⽬、事件或观测值的识别。
+通常异常的样本可能会导致银⾏欺诈、结构缺陷、医疗问题、⽂本错误等不同类型的问题。异常也被称为离群值、噪声、偏差和例外。
+常⽤的异常检测算法有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于密度的⽅法：最近邻居法、局部异常因⼦等&lt;/li&gt;
+&lt;li&gt;One-Class SVM&lt;/li&gt;
+&lt;li&gt;基于聚类的⽅法&lt;/li&gt;
+&lt;li&gt;Isolation Forest&lt;/li&gt;
+&lt;li&gt;AutoEncoder&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;特征变换和编码&#34;&gt;特征变换和编码&lt;/h2&gt;
+&lt;h3 id=&#34;数值类型&#34;&gt;数值类型&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;特征归一化&lt;/strong&gt;: 为了消除数据特征之间的量纲影响，需要对特征进行归一化(Normalization)处理，将所有的特征都统一到一个大致相同的数值区间内，在随机梯度下降的过程中，
 特征的更新速度变得更为一致，容易更快地通过梯度下降找到最优解。&lt;/p&gt;
-&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
+&lt;p&gt;最常用的方法主要有以下两种:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;线性函数归一化(Min-Max Scaling)&lt;/strong&gt;：对原始数据进行线性变换，使结果映射到[0, 1]的范围，实现对原始数据的等比缩放。公式如下：
@@ -931,7 +1131,7 @@ X= (X - Xmax) / (Xmax - Xmin)&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;其中X为原始数据，Xmax、Xmin分别为数据最大值和最小值。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;零均值归一化(Z-Score Normalization)&lt;/strong&gt;：它会将原始数据映射到均值为 0、标准差为1的分布上。若原始特征的均值为μ、标准差为σ,归一化公式定义为：
+&lt;p&gt;&lt;strong&gt;零均值归一化(Z-Score Normalization)&lt;/strong&gt;：它会将原始数据映射到均值为0、标准差为1的分布上。若原始特征的均值为μ、标准差为σ,归一化公式定义为：
 z = (X - μ) / σ&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -947,7 +1147,7 @@ z = (X - μ) / σ&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;在实际应用中，通过梯度下降法求解的模型通常是需要归一化的，包括&lt;strong&gt;线性回归&lt;/strong&gt;、&lt;strong&gt;逻辑回归&lt;/strong&gt;、&lt;strong&gt;支持向量机&lt;/strong&gt;、&lt;strong&gt;神经网络&lt;/strong&gt;等模型。
 但对于&lt;strong&gt;决策树&lt;/strong&gt;模型则并不适用，决策树在进行节点分裂时主要依据数据集和特征的信息增益比，而信息增益比跟特征是否经过归一化是无关的，因为归一化并不会改变样本在特征上的信息增益。&lt;/p&gt;
-&lt;h2 id=&#34;类别类型&#34;&gt;类别类型&lt;/h2&gt;
+&lt;h3 id=&#34;类别类型&#34;&gt;类别类型&lt;/h3&gt;
 &lt;p&gt;类别型特征(Categorical Feature)是只在有限选项内取值的特征，如性别(男、女)、血型(A、B、 AB、O)等。&lt;/p&gt;
 &lt;p&gt;类别型特征原始输入通常是字符串形式，除了决策树等少数模型能直接处理字符串形式的输入，对于逻辑回归、支持向量机等模型来说，类别型特征必须经过处理转换成数值型特征才能正确工作。&lt;/p&gt;
 &lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
@@ -975,109 +1175,77 @@ z = (X - μ) / σ&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;在独热编码下，特征向量只有某一维取值为1，其他位置取值均为0。因此可以利用向量的稀疏表示有效地节省空间，并且目前大部分的算法均接受稀疏向量形式的输入。&lt;/li&gt;
-&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常 只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
+&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编 码，节省了存储空间。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编码，节省了存储空间。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;文本&#34;&gt;文本&lt;/h2&gt;
+&lt;h2 id=&#34;特征提取和选择&#34;&gt;特征提取和选择&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;特征选择&lt;/strong&gt;是从⼀组特征中选出⼀些最有效的特征，使构造出来的模型更好。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;避免过度拟合，改进预测性能&lt;/li&gt;
+&lt;li&gt;使学习器运⾏更快，效能更⾼&lt;/li&gt;
+&lt;li&gt;剔除不相关的特征使模型更为简单,容易解释&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;过滤⽅法（Filter Methods）&lt;/strong&gt;：按照发散性或相关性对特征进⾏评分，设定阈值或者待选择阈值的个数，选择特征。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Bag of words和N-gram模型&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Bag of words 就是将每篇文章看成一袋子词。将整段文本以词为单位切分开， 然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。
-常用TF-IDF来计算权重，公式为TF-IDF(t,d)=TF(t,d)×IDF(t) ， 其中TF(t,d)为单词t在文档d中出现的频率，IDF(t)是逆文档频率，用来衡量单词t对表达语义所起的重要性。&lt;/p&gt;
+&lt;p&gt;⽅差选择法：选择⽅差⼤的特征。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;word2vec&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;图片&#34;&gt;图片&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;图像数据不足带来的问题？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;相关关系 &amp;amp; 卡⽅检验：特征与⽬标值的相关关系。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;图像数据不足时的处理方法？&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;数据：
-&lt;ul&gt;
-&lt;li&gt;数据增强&lt;/li&gt;
-&lt;li&gt;GAN&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;互信息法：⼀个随机变量包含另⼀个随机变量的信息量。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;模型：
-&lt;ul&gt;
-&lt;li&gt;简化模型&lt;/li&gt;
-&lt;li&gt;添加约束项缩小假设空间（l1 or l2正则项）&lt;/li&gt;
-&lt;li&gt;集成学习&lt;/li&gt;
-&lt;li&gt;dropout超参数设置&lt;/li&gt;
-&lt;li&gt;迁移学习：fine-tune已经训练好的模型&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        <item>
-        <title>机器学习笔记（一） - 模型评估</title>
-        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
-        <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
-        
-        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
-        <description>&lt;p&gt;特征工程，是对原始数据进行一系列的工程处理，去除原始数据的杂质和荣誉，将其提炼为可供机器学习的输入特征。机器学习常用的数据类型包括结构化数据和非结构化数据。&lt;/p&gt;
-&lt;h2 id=&#34;分类模型评估&#34;&gt;分类模型评估&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;准确率、精确率、召回率&lt;/strong&gt;:&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;F1值&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ROC曲线&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;AUC曲线&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;P-R曲线&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;类别类型&#34;&gt;类别类型&lt;/h2&gt;
-&lt;p&gt;类别型特征(Categorical Feature)是只在有限选项内取值的特征，如性别(男、女)、血型(A、B、 AB、O)等。&lt;/p&gt;
-&lt;p&gt;类别型特征原始输入通常是字符串形式，除了决策树等少数模型能直接处理字符串形式的输入，对于逻辑回归、支持向量机等模型来说，类别型特征必须经过处理转换成数值型特征才能正确工作。&lt;/p&gt;
-&lt;p&gt;最常用的方法主要有以下两种。&lt;/p&gt;
-&lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;序号编码（Ordinal Encoding）&lt;/strong&gt;: 常用来处理具有大小关系的类别特征（eg.成绩高中低）&lt;/p&gt;
+&lt;p&gt;封装⽅法（Wrapper Methods）：是利⽤学习算法的性能来评价特征⼦集的优劣。因此，对于⼀个待评价的特征⼦集， Wrapper⽅法需要训练⼀个分类器，根据分类器的性能对该特征⼦集进⾏评价，学习算法包括决策树、神经⽹络、⻉叶斯分类器、近邻法以及⽀持向量机等。Wrapper⽅法缺点主要是特征通⽤性不强，当改变学习算法时，需要针对该学习算法重新进⾏特征选择。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;集成⽅法（Embedded Methods）：在集成法特征选择中，特征选择算法本⾝作为组成部分嵌⼊到学习算法⾥。最典型的是决策树算法。包括基于惩罚项的特征选择法和基于树模型的特征选择法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OrdinalEncoder&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# 方差选择法&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.feature_selection&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VarianceThreshold&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# 根据 k 个最高分选择特征&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.feature_selection&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SelectKBest&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# 卡方检验&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.feature_selection&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;chi2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# 基于重要性权重选择特征&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.feature_selection&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SelectFromModel&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;独热编码(One-hot Encoding）&lt;/strong&gt;：不具有大小关系的类别特征（eg.血型）&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OneHotEncoder&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;在独热编码下，特征向量只有某一维取值为1，其他位置取值均为0。因此可以利用向量的稀疏表示有效地节省空间，并且目前大部分的算法均接受稀疏向量形式的输入。&lt;/li&gt;
-&lt;li&gt;高维度特征会带来几方面的问题。一是在K近邻算法中，高维空间下两点之间的距离很难得到有效的衡量;二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题;三是通常 只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;二进制编码(Binary Encoding)&lt;/strong&gt;：利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编 码，节省了存储空间。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;文本&#34;&gt;文本&lt;/h2&gt;
+&lt;/div&gt;&lt;h2 id=&#34;特征监控&#34;&gt;特征监控&lt;/h2&gt;
+&lt;p&gt;在数据分析和挖掘中，特征占据着很重要的地位。
+因此，我们需要对重要的特征进⾏监控与有效性分析，了解模型所⽤的特征是否存在问题，当某个特别重要的特征出问题时，需要做好备案，防⽌灾难性结果。&lt;/p&gt;
+&lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Bag of words和N-gram模型&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Bag of words 就是将每篇文章看成一袋子词。将整段文本以词为单位切分开， 然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。
-常用T&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://scikit-learn.org/stable/modules/classes.html?highlight=feature_selection#module-sklearn.feature_selection&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;sklearn.feature_selection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;sklearn.preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://scikit-learn.org/stable/modules/classes.html?highlight=sklearn&amp;#43;impute#module-sklearn.impute&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;sklearn.impute&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>

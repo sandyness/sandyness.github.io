@@ -6,10 +6,237 @@
         <description>Recent content in 论文笔记 on 一片生菜叶</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 08 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 07 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Transformer</title>
+        <link>https://sandyness.github.io/p/transformer/</link>
+        <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/transformer/</guid>
+        <description>&lt;p&gt;随着深度学习的发展 ，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)&lt;/strong&gt;-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;：主要由两篇论文提出：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.3215&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Sequence to Sequence Learning with Neural Networks&lt;/a&gt;和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1406.1078&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation&lt;/a&gt;。两者差别是前者使用LSTM，后者使用GRU。&lt;/p&gt;
+&lt;p&gt;如下图所示，其架构为 Encoder-Decoder，Encoder 先将输入句子进行编码，得到的状态传给 Decoder 解码生成目标句子。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*2OxcYXDYMIjCTEomCymawQ.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意力机制&lt;/strong&gt;：但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
+有两篇论文：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.0473&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1508.04025&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Effective Approaches to Attention-based Neural Machine Translation&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/720/1*Wo4GvE-e26oURzwbu2p4RQ.gif&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;transformer-模型架构&#34;&gt;Transformer 模型架构&lt;/h2&gt;
+&lt;p&gt;Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add &amp;amp; Norm、Feed Forward、Masked Multi-head Attention。
+&lt;img src=&#34;https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;encoder编码器&#34;&gt;Encoder（编码器）&lt;/h2&gt;
+&lt;h3 id=&#34;positional-encoding位置编码&#34;&gt;Positional Encoding（位置编码）&lt;/h3&gt;
+&lt;p&gt;input 先经过 embedding 层转换为向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。&lt;/p&gt;
+&lt;p&gt;论文使用 sin, cos 函数进行位置编码，公式如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么要使用 sin, cos 函数进行位置编码?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。
+此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;multi-head-attention多头注意力机制&#34;&gt;Multi-head Attention（多头注意力机制）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;self attention(自注意机制)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自注意力机制三个重要的参数 q, k, v。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;q (query)&lt;/strong&gt;: 是指当前的词向量，用于对每个 key 做匹配程度的打分；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;k (key)&lt;/strong&gt;: 是指序列中的所有词向量；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;v (value)&lt;/strong&gt;: 是指实际的序列內容。&lt;/p&gt;
+&lt;p&gt;由下图可以看到 q1 会对每个 k 做内积得到的 q , k 之间匹配的相似程度a1,1、a1,2&amp;hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Scaled Dot-Product Attention&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;由下列公式得知 q,  会先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 后，再做 softmax 计算出 v 的权重，
+最后与 v 做加权运算，其中 q, k 维度都为 dk，v 维度为 dv。除以 sqrt(dk)是为了避免当 dk (q, k 的维度) 太大时，q, k 的内积（Inner Product）的值过大，softmax 计算的值落入饱和区而导致梯度不稳定。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*MoYd4F8qVq28GaQMgK3VcA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*RTI9ISmPxNxQ1sPhasweVg.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;多头注意力&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在 CN N中可以输出多个通道。在transformer中，为了模拟CNN能够输出多个通道的效果，提出了多头注意力机制（Multi-head Attention）。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*bX4xWGLlidqJmEgW6SO3cA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Input Embedding 和 Positional Encoding 相加后进入到 layer 里。Encoder 有 Multi-head Attention 和 Feed Forward 这两个子层。&lt;/p&gt;
+&lt;p&gt;其运算方式与 self-attention mechanism 相同。区别是先将q,k,v拆分成多个低维度的向量。&lt;/p&gt;
+&lt;p&gt;若假设head=2,qi会拆分为qi,1、qi,2。最后再把这些head输出concat起来做一次线性运算。这样的好处是能够让各个head(q,k,v)关注不同的资讯，有些关注局部资讯，有些关注全局资讯。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/720/1*e7Vk-1dOYydqmaQm5lNhpQ.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;由下图可以看到q,k,v会做h次的线性映射到低维度的向量，再进行 Scaled Dot-Product Attention，最后将其concat、linear 得到输出。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*JTNvv3EaZsbfDDlys5MYkg.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;add--norm&#34;&gt;Add &amp;amp; Norm&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: batch normalization 和 layer normalization 的区别?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;batch normalization 是将每个batch（批量）的特征向量（列）做 normalization，而layer normalization是将每个样本（行）做 normalization。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么用 layer normalization 而不用 batch normalization?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在时序的序列里，每个样本的长度可能是不一样的。若用batch normalization对特征向量做均值和方差的计算，会导致结果不稳定。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;经过 Multi-head Attention 后进入 Add &amp;amp; Norm 层，这一层是指 residual connection 和 layer normalization。前一层的输出 Sublayer 与输入 x 相加 (residual connection)，减缓梯度消失的问题，然后再做 layer normalization。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*pTvOxquqbWusuu56UvHUhA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;feed-forward-networks-前馈全连接层&#34;&gt;Feed-Forward Networks (前馈全连接层)&lt;/h3&gt;
+&lt;p&gt;公式如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/720/1*ydsShg3kOfXS_--EyYHI-g.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。&lt;/p&gt;
+&lt;h2 id=&#34;decoder解码器&#34;&gt;Decoder(解码器)&lt;/h2&gt;
+&lt;p&gt;Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
+此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
+&lt;img src=&#34;https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;avatar&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;masked-multi-head-attention掩码多头机制&#34;&gt;Masked Multi-head Attention（掩码多头机制）&lt;/h3&gt;
+&lt;p&gt;Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Sequence Mask 只用于 Decoder，目的是为了防止模型看到未来的资讯，因此在超过当前时刻t的输出会加一个mask，确保模型的预测只依赖于当前时刻的输出。&lt;/p&gt;
+&lt;p&gt;Sequence Mask 的做法是通过一个上三角矩阵，将这些区域的值都设为负无穷，这样这些元素经过softmax后都会变为0达到掩码的效果。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考链接&#34;&gt;参考链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1706.03762&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;论文链接&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1pu411o7BE/?spm_id_from=333.788&amp;amp;vd_source=36661e71647573f262b7df0a70ec51c4&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李沐老师的Transformer【论文精读】&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>CNN｜ResNet</title>
         <link>https://sandyness.github.io/p/cnnresnet/</link>
-        <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/cnnresnet/</guid>
         <description>&lt;p&gt;本文介绍CNN的经典模型ResNet。ResNet在2015年微软亚洲院的何凯明博士提出，并在同年的ImageNet LSVRC竞赛中获得了冠军，同时也在ImageNet detection、
@@ -417,233 +644,9 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
 </description>
         </item>
         <item>
-        <title>Transformer</title>
-        <link>https://sandyness.github.io/p/transformer/</link>
-        <pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate>
-        
-        <guid>https://sandyness.github.io/p/transformer/</guid>
-        <description>&lt;p&gt;随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫&lt;strong&gt;自注意力机制(self-attention mechanism)&lt;/strong&gt;-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Seq2Seq&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Seq2Seq主要由两篇论文提出：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.3215&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Sequence to Sequence Learning with Neural Networks&lt;/a&gt;、 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1406.1078&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation&lt;/a&gt;。两者差别是前者使用LSTM，后者使用GRU。&lt;/p&gt;
-&lt;p&gt;如下图所示，其架构为 Encoder-Decoder，Encoder 先将输入句子进行编码，得到的状态传给 Decoder 解码生成目标句子。
-&lt;img src=&#34;https://miro.medium.com/max/786/1*2OxcYXDYMIjCTEomCymawQ.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;注意力机制&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
-有两篇论文：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1409.0473&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Neural Machine Translation by Jointly Learning to Align and Translate&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1508.04025&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Effective Approaches to Attention-based Neural Machine Translation&lt;/a&gt;。
-&lt;img src=&#34;https://miro.medium.com/max/720/1*Wo4GvE-e26oURzwbu2p4RQ.gif&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;transformer-模型架构&#34;&gt;Transformer 模型架构&lt;/h2&gt;
-&lt;p&gt;Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;amp;Norm、Feed Forward、Masked Multi-head Attention。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h3 id=&#34;encoder&#34;&gt;Encoder&lt;/h3&gt;
-&lt;h4 id=&#34;positional-encoding位置编码&#34;&gt;Positional Encoding（位置编码）&lt;/h4&gt;
-&lt;p&gt;input 先经过 embedding 层转换为一个向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。&lt;/p&gt;
-&lt;p&gt;论文只用 sin, cos 函数进行位置编码，公式如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Q: 为什么要使用 sin, cos 函数进行位置编码?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。&lt;/p&gt;
-&lt;p&gt;此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;多头注意力机制&#34;&gt;多头注意力机制&lt;/h4&gt;
-&lt;p&gt;Input Embedding 和 Positional Encoding 相加后进入到 layer 里。Encoder 有 Multi-head Attention 和 Feed Forward 这两个子层。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*bX4xWGLlidqJmEgW6SO3cA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;自注意机制&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;自注意力机制三个重要的参数 q, k, v。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;q (query)&lt;/strong&gt;: 是指当前的词向量，用于对每个 key 做匹配程度的打分；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;k (key)&lt;/strong&gt;: 是指序列中的所有词向量；&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;v (value)&lt;/strong&gt;: 是指实际的序列內容。&lt;/p&gt;
-&lt;p&gt;由下图可以看到q1会对每个k做内积得到的q, k之间匹配的相似程度a1,1、a1,2&amp;hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Scaled Dot-Product Attention&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;由下列公式得知 q, k 会先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 后，再做 softmax 计算出 v 的权重，
-最后与 v 做加权运算，其中 q, k 维度都为 dk，v 维度wei  dv。除以 sqrt(dk)是为了避免当 dk (q, k 的维度) 太大时，q, k Inner Product 的值过大，softmax 计算的值落入饱和区而导致梯度不稳定。
-&lt;img src=&#34;https://miro.medium.com/max/786/1*MoYd4F8qVq28GaQMgK3VcA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;
-&lt;img src=&#34;https://miro.medium.com/max/640/1*RTI9ISmPxNxQ1sPhasweVg.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;多头注意力&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;其运算方式与 self-attention mechanism 相同。区别是先将q,k,v拆分成多个低维度的向量。若假设head=2,qi会拆分为qi,1、qi,2。最后再把这些head输出concat起来做一次线性运算。&lt;/p&gt;
-&lt;p&gt;这样的好处是能够让各个head(q,k,v)关注不同的资讯，有些关注local，有些关注global资讯。
-&lt;img src=&#34;https://miro.medium.com/max/720/1*e7Vk-1dOYydqmaQm5lNhpQ.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;由下图可以看到q,k,v会做h次的线性映射到低维度的向量，再进行 Scaled Dot-Product Attention，最后将其concat、linear 得到输出。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*JTNvv3EaZsbfDDlys5MYkg.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;add--norm&#34;&gt;Add &amp;amp; Norm&lt;/h4&gt;
-&lt;p&gt;经过 Multi-head Attention 后进入 Add &amp;amp; Norm 层，这一层是指 residual connection 和 layer normalization。前一层的输出 Sublayer 与输入 x 相加 (residual connection)，减缓梯度消失的问题，然后再做 layer normalization。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*pTvOxquqbWusuu56UvHUhA.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;feed-forward-networks-fnn&#34;&gt;Feed-Forward Networks (FNN)&lt;/h4&gt;
-&lt;p&gt;公式如下：
-&lt;img src=&#34;https://miro.medium.com/max/720/1*ydsShg3kOfXS_--EyYHI-g.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。&lt;/p&gt;
-&lt;h3 id=&#34;decoder&#34;&gt;Decoder&lt;/h3&gt;
-&lt;p&gt;Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
-此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
-&lt;img src=&#34;https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;avatar&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;masked-multi-head-attention&#34;&gt;Masked Multi-head Attention&lt;/h4&gt;
-&lt;p&gt;Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Padding Mask 在 Encoder 和 Decoder 中都有使用到，目的是为了限制每个输入的长度要相同，对较短的句子会將不足的部分补 0；&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Sequence Mask 只用于 Decoder，目的是为了防止模型看到未来的资讯，因此在超过当前时刻t的输出会加一个mask，确保模型的预测只依赖于当前时刻的输出。&lt;/p&gt;
-&lt;p&gt;Sequence Mask 的做法是通过一个上三角矩阵，将这些区域的值都设为负无穷，这样这些元素经过softmax后都会变为0达到掩码的效果。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;参考链接&#34;&gt;参考链接&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1706.03762&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;论文链接&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1pu411o7BE/?spm_id_from=333.788&amp;amp;vd_source=36661e71647573f262b7df0a70ec51c4&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;李沐老师的Transformer【论文精读】&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        <item>
         <title>CNN｜AlexNet</title>
         <link>https://sandyness.github.io/p/cnnalexnet/</link>
-        <pubDate>Wed, 05 May 2021 00:00:00 +0000</pubDate>
+        <pubDate>Tue, 05 May 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/cnnalexnet/</guid>
         <description>&lt;p&gt;AlexNet 是 Alex Krizhevsky 于2012提出的。并在同年的 ImageNet LSVRC 竞赛中获得了冠军。AlexNet 架构有8层，其中5个卷积层、3个全连接层。&lt;/p&gt;

@@ -6,26 +6,26 @@
         <description>Recent content in Tags on 一片生菜叶</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 08 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>CV</title>
-        <link>https://sandyness.github.io/tags/cv/</link>
-        <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
-        
-        <guid>https://sandyness.github.io/tags/cv/</guid>
-        <description></description>
-        </item>
-        <item>
+        <lastBuildDate>Mon, 07 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>NLP</title>
         <link>https://sandyness.github.io/tags/nlp/</link>
-        <pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate>
+        <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/tags/nlp/</guid>
         <description></description>
         </item>
         <item>
+        <title>CV</title>
+        <link>https://sandyness.github.io/tags/cv/</link>
+        <pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/tags/cv/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Productivity</title>
         <link>https://sandyness.github.io/tags/productivity/</link>
-        <pubDate>Fri, 02 Apr 2021 00:00:00 +0000</pubDate>
+        <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/tags/productivity/</guid>
         <description></description>
@@ -33,7 +33,7 @@
         <item>
         <title>模型评估</title>
         <link>https://sandyness.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
-        <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+        <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
         <description></description>

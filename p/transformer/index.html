@@ -9,7 +9,7 @@
 <meta property='og:description' content='Attention Is All You Need'>
 <meta property='og:url' content='https://sandyness.github.io/p/transformer/'>
 <meta property='og:site_name' content='一片生菜叶'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='NLP' /><meta property='article:published_time' content='2021-07-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-07-07T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='NLP' /><meta property='article:published_time' content='2020-09-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-09-07T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="Transformer">
 <meta name="twitter:description" content="Attention Is All You Need"><style>
     :root {
@@ -279,7 +279,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jul 07, 2021</time>
+                <time class="article-time--published">Sep 07, 2020</time>
             </div>
         
 
@@ -308,15 +308,12 @@
     <section class="article-content">
     
     
-    <p>随着深度学习的发展，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫<strong>自注意力机制(self-attention mechanism)</strong>-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。</p>
-<ul>
-<li>
-<p><strong>Seq2Seq</strong></p>
-<p>Seq2Seq主要由两篇论文提出：<a class="link" href="https://arxiv.org/abs/1409.3215"  target="_blank" rel="noopener"
-    >Sequence to Sequence Learning with Neural Networks</a>、 <a class="link" href="https://arxiv.org/abs/1406.1078"  target="_blank" rel="noopener"
+    <p>随着深度学习的发展 ，自然语言处理（NLP）技术越来越成熟。在机器翻译、语音识别、情感分析、文本生成、人机对话等任务上都有很好的结果。但由于RNN难以进行并行计算，因此Google提出了一种不使用RNN和CNN，而是使用叫<strong>自注意力机制(self-attention mechanism)</strong>-Transformer。其网络架构是基于 Seq2Seq + self-attention mechanism。</p>
+<p><strong>Seq2Seq</strong>：主要由两篇论文提出：<a class="link" href="https://arxiv.org/abs/1409.3215"  target="_blank" rel="noopener"
+    >Sequence to Sequence Learning with Neural Networks</a>和 <a class="link" href="https://arxiv.org/abs/1406.1078"  target="_blank" rel="noopener"
     >Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</a>。两者差别是前者使用LSTM，后者使用GRU。</p>
-<p>如下图所示，其架构为 Encoder-Decoder，Encoder 先将输入句子进行编码，得到的状态传给 Decoder 解码生成目标句子。
-<img src="https://miro.medium.com/max/786/1*2OxcYXDYMIjCTEomCymawQ.png"
+<p>如下图所示，其架构为 Encoder-Decoder，Encoder 先将输入句子进行编码，得到的状态传给 Decoder 解码生成目标句子。</p>
+<p><img src="https://miro.medium.com/max/786/1*2OxcYXDYMIjCTEomCymawQ.png"
 	
 	
 	
@@ -326,14 +323,11 @@
 	
 	
 ></p>
-</li>
-<li>
-<p><strong>注意力机制</strong></p>
-<p>但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
+<p><strong>注意力机制</strong>：但是当讯息太长时，seq2seq容易丢失讯息，因此引入了注意力机制。其概念为将Encoder所有资讯传给Decoder，让Decoder决定将注意力放在哪些资讯上。
 有两篇论文：<a class="link" href="https://arxiv.org/abs/1409.0473"  target="_blank" rel="noopener"
     >Neural Machine Translation by Jointly Learning to Align and Translate</a> 和 <a class="link" href="https://arxiv.org/abs/1508.04025"  target="_blank" rel="noopener"
-    >Effective Approaches to Attention-based Neural Machine Translation</a>。
-<img src="https://miro.medium.com/max/720/1*Wo4GvE-e26oURzwbu2p4RQ.gif"
+    >Effective Approaches to Attention-based Neural Machine Translation</a>。</p>
+<p><img src="https://miro.medium.com/max/720/1*Wo4GvE-e26oURzwbu2p4RQ.gif"
 	
 	
 	
@@ -343,10 +337,8 @@
 	
 	
 ></p>
-</li>
-</ul>
 <h2 id="transformer-模型架构">Transformer 模型架构</h2>
-<p>Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add&amp;Norm、Feed Forward、Masked Multi-head Attention。
+<p>Transformer 由 N=6 的 Encoder-Decoder 堆叠而成。Encoder-Decoder 结构有 Multi-head Attention、Add &amp; Norm、Feed Forward、Masked Multi-head Attention。
 <img src="https://miro.medium.com/max/640/1*lQ7BIufRyJQ-FOrOLjp55Q.png"
 	
 	
@@ -357,10 +349,10 @@
 	
 	
 ></p>
-<h3 id="encoder">Encoder</h3>
-<h4 id="positional-encoding位置编码">Positional Encoding（位置编码）</h4>
-<p>input 先经过 embedding 层转换为一个向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。</p>
-<p>论文只用 sin, cos 函数进行位置编码，公式如下：</p>
+<h2 id="encoder编码器">Encoder（编码器）</h2>
+<h3 id="positional-encoding位置编码">Positional Encoding（位置编码）</h3>
+<p>input 先经过 embedding 层转换为向量，然后在进入 layer 前先与 Positional Encoding 相加。Positional Encoding 是词语的位置编码，目的是为了让模型考虑词语之间的顺序。</p>
+<p>论文使用 sin, cos 函数进行位置编码，公式如下：</p>
 <p><img src="https://miro.medium.com/max/640/1*d6q62IC_zCNnTZTUOVnGdA.png"
 	
 	
@@ -372,10 +364,12 @@
 	
 ></p>
 <p>其中 pos 为词语在序列中的位置、2i, 2i+1 为词语在 Positional Encoding 维度上的 index、d_model 为 Positional Encoding 的维度 (与 Input Embedding 维度相等)，预设值512。</p>
+<blockquote>
 <p><strong>Q: 为什么要使用 sin, cos 函数进行位置编码?</strong></p>
-<p>sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。</p>
-<p>此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。
-<img src="https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png"
+<p>sin, cos 函数可以表示两个向量间的线性关系，能呈现不同词语之间的相对位置，并且不受序列长度的限制，不会有重复的问题。
+此外，sin, cos 函数有上下界 (位于 [0, 1] 之间)、具有稳定循环的性质。</p>
+</blockquote>
+<p><img src="https://miro.medium.com/max/640/1*g0BcNz8Ip_qAHzUtzfwyzA.png"
 	
 	
 	
@@ -385,26 +379,15 @@
 	
 	
 ></p>
-<h4 id="多头注意力机制">多头注意力机制</h4>
-<p>Input Embedding 和 Positional Encoding 相加后进入到 layer 里。Encoder 有 Multi-head Attention 和 Feed Forward 这两个子层。
-<img src="https://miro.medium.com/max/640/1*bX4xWGLlidqJmEgW6SO3cA.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="avatar"
-	
-	
-></p>
+<h3 id="multi-head-attention多头注意力机制">Multi-head Attention（多头注意力机制）</h3>
 <ul>
 <li>
-<p><strong>自注意机制</strong></p>
+<p><strong>self attention(自注意机制)</strong></p>
 <p>自注意力机制三个重要的参数 q, k, v。</p>
 <p><strong>q (query)</strong>: 是指当前的词向量，用于对每个 key 做匹配程度的打分；</p>
 <p><strong>k (key)</strong>: 是指序列中的所有词向量；</p>
 <p><strong>v (value)</strong>: 是指实际的序列內容。</p>
-<p>由下图可以看到q1会对每个k做内积得到的q, k之间匹配的相似程度a1,1、a1,2&hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。</p>
+<p>由下图可以看到 q1 会对每个 k 做内积得到的 q , k 之间匹配的相似程度a1,1、a1,2&hellip;,然后做一些列运算得到输出，这些计算步骤称为 Scaled Dot-Product Attention。</p>
 <p><img src="https://miro.medium.com/max/786/1*vDZjAxkxavCMCdulEq-_6g.png"
 	
 	
@@ -418,9 +401,9 @@
 </li>
 <li>
 <p><strong>Scaled Dot-Product Attention</strong></p>
-<p>由下列公式得知 q, k 会先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 后，再做 softmax 计算出 v 的权重，
-最后与 v 做加权运算，其中 q, k 维度都为 dk，v 维度wei  dv。除以 sqrt(dk)是为了避免当 dk (q, k 的维度) 太大时，q, k Inner Product 的值过大，softmax 计算的值落入饱和区而导致梯度不稳定。
-<img src="https://miro.medium.com/max/786/1*MoYd4F8qVq28GaQMgK3VcA.png"
+<p>由下列公式得知 q,  会先做 Inner Product，得到的值是匹配的相似程度，除以 sqrt(dk) 后，再做 softmax 计算出 v 的权重，
+最后与 v 做加权运算，其中 q, k 维度都为 dk，v 维度为 dv。除以 sqrt(dk)是为了避免当 dk (q, k 的维度) 太大时，q, k 的内积（Inner Product）的值过大，softmax 计算的值落入饱和区而导致梯度不稳定。</p>
+<p><img src="https://miro.medium.com/max/786/1*MoYd4F8qVq28GaQMgK3VcA.png"
 	
 	
 	
@@ -429,8 +412,8 @@
 		alt="avatar"
 	
 	
->
-<img src="https://miro.medium.com/max/640/1*RTI9ISmPxNxQ1sPhasweVg.png"
+></p>
+<p><img src="https://miro.medium.com/max/640/1*RTI9ISmPxNxQ1sPhasweVg.png"
 	
 	
 	
@@ -443,9 +426,8 @@
 </li>
 <li>
 <p><strong>多头注意力</strong></p>
-<p>其运算方式与 self-attention mechanism 相同。区别是先将q,k,v拆分成多个低维度的向量。若假设head=2,qi会拆分为qi,1、qi,2。最后再把这些head输出concat起来做一次线性运算。</p>
-<p>这样的好处是能够让各个head(q,k,v)关注不同的资讯，有些关注local，有些关注global资讯。
-<img src="https://miro.medium.com/max/720/1*e7Vk-1dOYydqmaQm5lNhpQ.png"
+<p>在 CN N中可以输出多个通道。在transformer中，为了模拟CNN能够输出多个通道的效果，提出了多头注意力机制（Multi-head Attention）。</p>
+<p><img src="https://miro.medium.com/max/640/1*bX4xWGLlidqJmEgW6SO3cA.png"
 	
 	
 	
@@ -455,8 +437,21 @@
 	
 	
 ></p>
-<p>由下图可以看到q,k,v会做h次的线性映射到低维度的向量，再进行 Scaled Dot-Product Attention，最后将其concat、linear 得到输出。
-<img src="https://miro.medium.com/max/640/1*JTNvv3EaZsbfDDlys5MYkg.png"
+<p>Input Embedding 和 Positional Encoding 相加后进入到 layer 里。Encoder 有 Multi-head Attention 和 Feed Forward 这两个子层。</p>
+<p>其运算方式与 self-attention mechanism 相同。区别是先将q,k,v拆分成多个低维度的向量。</p>
+<p>若假设head=2,qi会拆分为qi,1、qi,2。最后再把这些head输出concat起来做一次线性运算。这样的好处是能够让各个head(q,k,v)关注不同的资讯，有些关注局部资讯，有些关注全局资讯。</p>
+<p><img src="https://miro.medium.com/max/720/1*e7Vk-1dOYydqmaQm5lNhpQ.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="avatar"
+	
+	
+></p>
+<p>由下图可以看到q,k,v会做h次的线性映射到低维度的向量，再进行 Scaled Dot-Product Attention，最后将其concat、linear 得到输出。</p>
+<p><img src="https://miro.medium.com/max/640/1*JTNvv3EaZsbfDDlys5MYkg.png"
 	
 	
 	
@@ -468,9 +463,17 @@
 ></p>
 </li>
 </ul>
-<h4 id="add--norm">Add &amp; Norm</h4>
-<p>经过 Multi-head Attention 后进入 Add &amp; Norm 层，这一层是指 residual connection 和 layer normalization。前一层的输出 Sublayer 与输入 x 相加 (residual connection)，减缓梯度消失的问题，然后再做 layer normalization。
-<img src="https://miro.medium.com/max/640/1*pTvOxquqbWusuu56UvHUhA.png"
+<h3 id="add--norm">Add &amp; Norm</h3>
+<blockquote>
+<p><strong>Q: batch normalization 和 layer normalization 的区别?</strong></p>
+<p>batch normalization 是将每个batch（批量）的特征向量（列）做 normalization，而layer normalization是将每个样本（行）做 normalization。</p>
+</blockquote>
+<blockquote>
+<p><strong>Q: 为什么用 layer normalization 而不用 batch normalization?</strong></p>
+<p>在时序的序列里，每个样本的长度可能是不一样的。若用batch normalization对特征向量做均值和方差的计算，会导致结果不稳定。</p>
+</blockquote>
+<p>经过 Multi-head Attention 后进入 Add &amp; Norm 层，这一层是指 residual connection 和 layer normalization。前一层的输出 Sublayer 与输入 x 相加 (residual connection)，减缓梯度消失的问题，然后再做 layer normalization。</p>
+<p><img src="https://miro.medium.com/max/640/1*pTvOxquqbWusuu56UvHUhA.png"
 	
 	
 	
@@ -480,9 +483,9 @@
 	
 	
 ></p>
-<h4 id="feed-forward-networks-fnn">Feed-Forward Networks (FNN)</h4>
-<p>公式如下：
-<img src="https://miro.medium.com/max/720/1*ydsShg3kOfXS_--EyYHI-g.png"
+<h3 id="feed-forward-networks-前馈全连接层">Feed-Forward Networks (前馈全连接层)</h3>
+<p>公式如下：</p>
+<p><img src="https://miro.medium.com/max/720/1*ydsShg3kOfXS_--EyYHI-g.png"
 	
 	
 	
@@ -493,7 +496,7 @@
 	
 ></p>
 <p>输入 x 先做线性运算，送入 ReLU，再做一次线性运算。其中输入输出的为度 d_model=512，中间层的维度 dff = 2048。</p>
-<h3 id="decoder">Decoder</h3>
+<h2 id="decoder解码器">Decoder(解码器)</h2>
 <p>Decoder 与 Encoder 一样先 Positional Encoding 相加再进入 layer，区别是 Decoder 有 Masked Multi-head Attention、Multi-head Attention、Feed Forward 这三个子层。
 此外， Multi-head Attention 的输入 q 來自自身前一层的输出，而 k, v 则是来自于 Encoder 的输出。
 <img src="https://miro.medium.com/max/640/1*lVntCExOMAij7ijFRyhS9g.png"
@@ -506,7 +509,7 @@
 	
 	
 ></p>
-<h4 id="masked-multi-head-attention">Masked Multi-head Attention</h4>
+<h3 id="masked-multi-head-attention掩码多头机制">Masked Multi-head Attention（掩码多头机制）</h3>
 <p>Transformer 的 掩码机制有两种：Padding Mask、Sequence Mask</p>
 <ul>
 <li>
@@ -517,7 +520,7 @@
 <p>Sequence Mask 的做法是通过一个上三角矩阵，将这些区域的值都设为负无穷，这样这些元素经过softmax后都会变为0达到掩码的效果。</p>
 </li>
 </ul>
-<h1 id="参考链接">参考链接</h1>
+<h2 id="参考链接">参考链接</h2>
 <ul>
 <li><a class="link" href="https://arxiv.org/abs/1706.03762"  target="_blank" rel="noopener"
     >论文链接</a></li>
@@ -649,7 +652,7 @@
             2020 - 
         
         2022 一片生菜叶
-        共码了1.5k字·共 6篇文章</br><span><p></p>
+        共码了1.8k字·共 6篇文章</br><span><p></p>
         </section>
 
     
@@ -775,23 +778,21 @@ document.getElementById('days').innerHTML = number_of_days;
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#transformer-模型架构">Transformer 模型架构</a>
+    <li><a href="#transformer-模型架构">Transformer 模型架构</a></li>
+    <li><a href="#encoder编码器">Encoder（编码器）</a>
       <ol>
-        <li><a href="#encoder">Encoder</a>
-          <ol>
-            <li><a href="#positional-encoding位置编码">Positional Encoding（位置编码）</a></li>
-            <li><a href="#多头注意力机制">多头注意力机制</a></li>
-            <li><a href="#add--norm">Add &amp; Norm</a></li>
-            <li><a href="#feed-forward-networks-fnn">Feed-Forward Networks (FNN)</a></li>
-          </ol>
-        </li>
-        <li><a href="#decoder">Decoder</a>
-          <ol>
-            <li><a href="#masked-multi-head-attention">Masked Multi-head Attention</a></li>
-          </ol>
-        </li>
+        <li><a href="#positional-encoding位置编码">Positional Encoding（位置编码）</a></li>
+        <li><a href="#multi-head-attention多头注意力机制">Multi-head Attention（多头注意力机制）</a></li>
+        <li><a href="#add--norm">Add &amp; Norm</a></li>
+        <li><a href="#feed-forward-networks-前馈全连接层">Feed-Forward Networks (前馈全连接层)</a></li>
       </ol>
     </li>
+    <li><a href="#decoder解码器">Decoder(解码器)</a>
+      <ol>
+        <li><a href="#masked-multi-head-attention掩码多头机制">Masked Multi-head Attention（掩码多头机制）</a></li>
+      </ol>
+    </li>
+    <li><a href="#参考链接">参考链接</a></li>
   </ol>
 </nav>
         </div>

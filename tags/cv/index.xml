@@ -6,10 +6,10 @@
         <description>Recent content in CV on 一片生菜叶</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 08 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/cv/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 08 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/cv/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>CNN｜ResNet</title>
         <link>https://sandyness.github.io/p/cnnresnet/</link>
-        <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 08 Jul 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/cnnresnet/</guid>
         <description>&lt;p&gt;本文介绍CNN的经典模型ResNet。ResNet在2015年微软亚洲院的何凯明博士提出，并在同年的ImageNet LSVRC竞赛中获得了冠军，同时也在ImageNet detection、
@@ -419,7 +419,7 @@ ResNet模型一共使用了152层，其深度比 GoogLeNet 高了七倍多 (20�
         <item>
         <title>CNN｜AlexNet</title>
         <link>https://sandyness.github.io/p/cnnalexnet/</link>
-        <pubDate>Wed, 05 May 2021 00:00:00 +0000</pubDate>
+        <pubDate>Tue, 05 May 2020 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/cnnalexnet/</guid>
         <description>&lt;p&gt;AlexNet 是 Alex Krizhevsky 于2012提出的。并在同年的 ImageNet LSVRC 竞赛中获得了冠军。AlexNet 架构有8层，其中5个卷积层、3个全连接层。&lt;/p&gt;
