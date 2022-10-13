@@ -52,7 +52,7 @@
 &lt;ul&gt;
 &lt;li&gt;簇C内样本间的平均距离&lt;/li&gt;
 &lt;li&gt;簇C内样本间最远距离&lt;/li&gt;
-&lt;li&gt;簇Ci与Cj最近样本件的距离&lt;/li&gt;
+&lt;li&gt;簇Ci与Cj最近样本间的距离&lt;/li&gt;
 &lt;li&gt;簇Ci与Cj中⼼点间的距离&lt;/li&gt;
 &lt;li&gt;DB 指数（Davies-Bouldin Index，DBI）类⽐簇间相似度&lt;/li&gt;
 &lt;li&gt;Dunn 指数（Dunn Index，DI）类⽐簇内相似度

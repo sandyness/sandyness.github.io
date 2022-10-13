@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>CNN on 一片生菜叶</title>
-        <link>https://sandyness.github.io/tags/cnn/</link>
-        <description>Recent content in CNN on 一片生菜叶</description>
+        <title>垃圾邮件 on 一片生菜叶</title>
+        <link>https://sandyness.github.io/tags/%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6/</link>
+        <description>Recent content in 垃圾邮件 on 一片生菜叶</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/cnn/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 02 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>图片型垃圾邮件过滤方法</title>
         <link>https://sandyness.github.io/p/%E5%9B%BE%E7%89%87%E5%9E%8B%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E8%BF%87%E6%BB%A4%E6%96%B9%E6%B3%95/</link>
-        <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
         
         <guid>https://sandyness.github.io/p/%E5%9B%BE%E7%89%87%E5%9E%8B%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E8%BF%87%E6%BB%A4%E6%96%B9%E6%B3%95/</guid>
         <description>&lt;p&gt;图片垃圾邮件是一种在图片中嵌入文本的垃圾邮件。垃圾邮件发送者逃避基于文本的垃圾邮件过滤器的常用技术之一是将消息嵌入图像中。
