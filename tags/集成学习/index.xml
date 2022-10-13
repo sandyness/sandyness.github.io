@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>集成学习 on 一片生菜叶</title>
+        <link>https://sandyness.github.io/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/</link>
+        <description>Recent content in 集成学习 on 一片生菜叶</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 05 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://sandyness.github.io/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>机器学习笔记(三) - 集成学习（Ensemble Learning）</title>
+        <link>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0ensemble-learning/</link>
+        <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://sandyness.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0ensemble-learning/</guid>
+        <description>&lt;p&gt;传统机器学习算法 (例如：决策树，人工神经网络，支持向量机，朴素贝叶斯等) 的目标都是寻找一个最优分类器尽可能的将训练数据分开。
+集成学习 (Ensemble Learning) 算法的基本思想就是将多个分类器组合，从而实现一个预测效果更好的集成分类器。
+集成算法可以说从一方面验证了中国的一句老话：三个臭皮匠，赛过诸葛亮。&lt;/p&gt;
+&lt;p&gt;集成算法大致可以分为：Bagging，Boosting 和 Stacking 等类型。&lt;/p&gt;
+&lt;h2 id=&#34;bagging&#34;&gt;Bagging&lt;/h2&gt;
+&lt;p&gt;Bagging (Boostrap Aggregating) 是由 Breiman 于 1996 年提出的，基本思想如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;每次采用有放回的抽样从训练集中取出n个训练样本组成新的训练集;&lt;/li&gt;
+&lt;li&gt;利用新的训练集，训练得到 M 个子模型;&lt;/li&gt;
+&lt;li&gt;对于分类问题，采用投票的方法，得票最多子模型的分类类别为最终的类别；对于回归问题，采用简单的平均方法得到预测值。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;random-forest&#34;&gt;Random Forest&lt;/h3&gt;
+&lt;p&gt;随机森林 (Random Forests) 是一种利用决策树作为基学习器的 Bagging 集成学习算法。随机森林模型的构建过程如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;数据采样&lt;/p&gt;
+&lt;p&gt;作为一种 Bagging 集成算法，随机森林同样采用有放回的采样，对于总体训练集T，抽样一个子集T(sub)作为训练样本集。
+除此之外，假设训练集的特征个数为d，每次仅选择k(k &amp;lt; d)个特征构建决策树。
+因此，随机森林除了能够做到样本扰动外，还添加了特征扰动。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;树的构建&lt;/p&gt;
+&lt;p&gt;每次根据采样得到的数据和特征构建一棵决策树。在构建决策树的过程中，会让决策树生长完全而不进行剪枝。构建出的若干棵决策树则组成了最终的随机森林。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;随机森林在众多分类算法中表现十分出众，其主要的优点包括：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;由于随机森林引入了样本扰动和特征扰动，从而很大程度上提高了模型的泛化能力，尽可能地避免了过拟合现象的出现。&lt;/li&gt;
+&lt;li&gt;随机森林可以处理高维数据，无需进行特征选择，在训练过程中可以得出不同特征对模型的重要性程度。&lt;/li&gt;
+&lt;li&gt;随机森林的每个基分类器采用决策树，方法简单且容易实现。同时每个基分类器之间没有相互依赖关系，整个算法易并行化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: 可否将随机森林中的基分类器，由决策树替换为线性分类器或KNN,为什么?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;随机森林属于Bagging类的集成学习。Bagging的主要好处是集成后的分类器的方差，比基分类器的方差小。Bagging所采用的基分类器，最好是本身对样本分布较为敏感的(即所谓不稳定的分类器)，这样Bagging才能有用武之地。线性分类器和KNN都是较为稳定的分类器，本身方差就不大，所以以它们为基分类器使用Bagging并不能在原有基分类器的基础上获得更好的表现，甚至可能因为Bagging的采样，而导致他们在训练中更难收敛，从而增大了集成分类器的偏差。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;boosting&#34;&gt;Boosting&lt;/h2&gt;
+&lt;p&gt;Boosting 是一种提升算法，可以将弱的学习算法提升 (boost) 为强的学习算法。基本思路如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;利用初始训练样本集训练得到一个基学习器;&lt;/li&gt;
+&lt;li&gt;提高被基学习器误分的样本的权重，使得那些被错误分类的样本在下一轮训练中可以得到更大的关注，利用调整后的样本训练得到下一个基学习器;&lt;/li&gt;
+&lt;li&gt;重复上述步骤，直至得到 M 个学习器;&lt;/li&gt;
+&lt;li&gt;对于分类问题，采用有权重的投票方式；对于回归问题，采用加权平均得到预测值。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;adaboost&#34;&gt;Adaboost&lt;/h3&gt;
+&lt;p&gt;新预测器对其前序进行纠正的方法之一就是更多地关注前序欠拟合的训练实例，从而使新的预测器不断地越来越专注于难缠的问题。
+例如，当训练AdaBoost分类器时，该算法首先训练一个基础分类器（例如决策树），并使用它对训练集进行预测。
+然后，该算法会增加分类错误的训练实例的相对权重。然后，它使用更新后的权重训练第二个分类器，并再次对训练集进行预测，更新实例权重，以此类推。&lt;/p&gt;
+&lt;h3 id=&#34;gbdt&#34;&gt;GBDT&lt;/h3&gt;
+&lt;p&gt;GBDT (Gradient Boosting Decision Tree) 是另一种基于 Boosting 思想的集成算法。
+GBDT 中使用的决策树不是分类树，而是回归树。回归树主要用于处理响应变量为数值型的数据，例如商品的价格。
+GBDT 中在应用 Boost 概念时，每一轮所使用的数据集没有经过重抽样，也没有更新样本的权重，而是每一轮选择了不用的回归目标，
+即上一轮计算得到的残差 (Residual)。其次，Gradient 是指在新一轮中在残差减少的梯度 (Gradient) 上建立新的基学习器。&lt;/p&gt;
+&lt;p&gt;GBDT 中也应用到了 Shrinkage 的思想，其基本思想可以理解为每一轮利用残差学习得到的回归树仅学习到了一部分知识，
+因此我们无法完全信任一棵树的结果。Shrinkage 思想认为在新的一轮学习中，不能利用全部残差训练模型，而是仅利用其中一部分，
+Shrinkage 设置小一些可以避免发生过拟合现象；而 Gradient 中的步长如果设置太小则会陷入局部最优，如果设置过大又容易结果不收敛。&lt;/p&gt;
+&lt;h3 id=&#34;xgboost&#34;&gt;XGBoost&lt;/h3&gt;
+&lt;p&gt;XGBoost是陈天奇等人开发的一个开源机器学习项目。原始的GBDT算法基于经验损失函数的负梯度来构造新的决策树，只是在决策
+树构建完成后再进行剪枝。而XGBoost在决策树构建阶段就加入了正则项。&lt;/p&gt;
+&lt;p&gt;XGBoost 也采用了 Shrinkage 的思想减少每棵树的影响，为后续树模型留下更多的改进空间。
+同时 XGBoost 也采用了随机森林中的特征下采样 (列采样) 方法用于避免过拟合，同时 XGBoost 也支持样本下采样 (行采样)。
+XGBoost 在分裂点的查找上也进行了优化，使之能够处理无法将全部数据读入内存的情况，同时能够更好的应对一些由于数据缺失，大量零值和 One-Hot 编码导致的特征稀疏问题。
+除此之外，XGBoost 在系统实现，包括：并行化，Cache-Aware 加速和数据的核外计算 (Out-of-Core Computation) 等方面也进行了大量优化。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Q: XGBoost与GBDT的联系和区别有哪些?&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;GBDT是机器学习算法，XGBoost是该算法的工程实现。&lt;/li&gt;
+&lt;li&gt;在使用CART作为基分类器时，XGBoost显式地加入了正则项来控制模型的复杂度，有利于防止过拟合，从而提高模型的泛化能力。&lt;/li&gt;
+&lt;li&gt;GBDT在模型训练时只使用了代价函数的一阶导数信息，XGBoost对代价函数进行二阶泰勒展开，可以同时使用一阶和二阶导数。&lt;/li&gt;
+&lt;li&gt;传统的GBDT采用CART作为基分类器，XGBoost支持多种类型的基分类器，比如线性分类器。&lt;/li&gt;
+&lt;li&gt;传统的GBDT在每轮迭代时使用全部的数据，XGBoost则采用了与随机森林相似的策略，支持对数据进行采样。&lt;/li&gt;
+&lt;li&gt;传统的GBDT没有设计对缺失值进行处理，XGBoost能够自动学习出缺失值的处理策略。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;lightgbm&#34;&gt;LightGBM&lt;/h3&gt;
+&lt;p&gt;LightGBM 是由微软研究院的 Ke 等人提出了一种梯度提升树模型框架。之前的 GBDT 模型在查找最优分裂点时需要扫描所有的样本计算信息增益，
+因此其计算复杂度与样本的数量和特征的数量成正比，这使得在处理大数据量的问题时非常耗时。LightGBM 针对这个问题提出了两个算法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Gradient-based One-Side Sampling (GOSS)&lt;/li&gt;
+&lt;li&gt;Exclusive Feature Bundling (EFB)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;stacking&#34;&gt;Stacking&lt;/h2&gt;
+&lt;p&gt;Stacking又称为 Stacked Generalization，是一种基于分层模型组合的集成算法，同时也是一种模型组合策略。Stacking 算法的基本思想如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;利用初级学习算法对原始数据集进行学习，同时生成一个新的数据集。&lt;/li&gt;
+&lt;li&gt;根据从初级学习算法生成的新数据集，利用次级学习算法学习并得到最终的输出。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于初级学习器，可以是相同类型也可以是不同类型的。在新的数据集中，初级学习器的输出被用作次级学习器的输入特征，初始样本的标记仍被用作次级学习器学习样本的标记。&lt;/p&gt;
+&lt;p&gt;一些模型组合策略：平均法和投票法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;对于数值型的输出&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;简单平均法 (Simple Averaging)&lt;/li&gt;
+&lt;li&gt;加权平均法 (Weighted Averaging)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对于分类任务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;绝对多数投票法 (Majority Voting)&lt;/li&gt;
+&lt;li&gt;相对多数投票法 (Plurality Voting)&lt;/li&gt;
+&lt;li&gt;加权投票法 （Weighted Voting)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
